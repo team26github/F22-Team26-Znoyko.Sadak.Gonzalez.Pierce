@@ -64,7 +64,7 @@
         <!-- Row to hold sponsor reports and links -->
         <div class="row">
             <div class="sponsor-reports">
-                <p><strong>View Point Change Reports: </strong></p>
+                <p><strong>View Reports: </strong></p>
                 <a href="https://app.powerbi.com/reportEmbed?reportId=f793ef90-40fc-44b6-8a7e-62879d982d19&autoAuth=true&ctid=0c9bf8f6-ccad-4b87-818d-49026938aa97" target="_blank"> Power BI</a> 
             </div>
         </div>
