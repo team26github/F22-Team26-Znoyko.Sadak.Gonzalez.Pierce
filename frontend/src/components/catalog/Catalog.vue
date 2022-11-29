@@ -118,7 +118,7 @@
                 // Axios API call to python backend to get catalog items from eBay
                 axios.get(this.path + '/get-catalog-items', {params: {keywords: keywords}})
                     .then((res) => {
-                        if (res.data.status === 'success' {
+                        if (res.data.status === 'success') {
                     
                             let results = res.data.results;
                             let temp = res.data.purchased;
