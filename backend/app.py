@@ -357,7 +357,7 @@ def apply():
     cursor.execute(query)
     results = cursor.fetchall()
     sponsor_id=results[0][0]
-    query = f'INSERT INTO DriverApplications (EMAIL, FIRST_NAME, LAST_NAME, USERNAME, PASSWD, SPONSOR_ID) VALUES("{email}","{first_name}","{last_name}","{username}","{passwd}","{sponsor_id}")'
+    query = f'INSERT INTO DriverApplications (EMAIL, FIRST_NAME, LAST_NAME, USERNAME, PASSWD, SPONSOR_ID,APP_STATUS) VALUES("{email}","{first_name}","{last_name}","{username}","{passwd}","{sponsor_id}","Pending")'
     cursor.execute(query)
 
     db.commit()
@@ -454,7 +454,6 @@ def new_driver():
     cursor.execute(query)
     results = cursor.fetchall()
     sponsor_id=results[0][0]
-    print(sponsor_id)
     query = f'INSERT INTO UserInfo (passwd, UserType, Email, Username, PointsLimit, ExpirationPeriod, SponsorID, DollarPointValue, Fullname) VALUES("{passwd}","Driver", "{email}","{username}",100000, 12, "{sponsor_id}", 3.25, "{first_name} {last_name}")'
     cursor.execute(query)
 
@@ -617,6 +616,18 @@ def submit_app_decision():
     cursor.execute(query)
     results = cursor.fetchall()
     driver_id=results[0][0]
+    print(driver_id)
+    print(driver)
+    print(reason)
+    print(sponsor_id)
+    print(decision)
+    #if decision=='Accepted':
+    #    query = f'UPDATE DriverApplications SET APP_STATUS="{decision}", REASON="{reason}", SPONSOR_ID="{sponsor_id}", Active="Yes" WHERE DRIVER_ID="{driver_id}"'
+    #    cursor.execute(query)
+    #else :
+    #    query = f'UPDATE DriverApplications SET APP_STATUS="{decision}", REASON="{reason}", SPONSOR_ID="{sponsor_id}", Active="No" WHERE DRIVER_ID="{driver_id}"'
+    #    cursor.execute(query)
+
     query = f'INSERT INTO DriverAppLog (DriverAppID, Date, Changer, StatusChange, Reason) VALUES("{driver_id}","{datetime.now()}","{sponsor_id}", "{decision}", "{reason}")'
     cursor.execute(query)
 
@@ -781,10 +792,8 @@ def deactivateadmin():
     user_id=results[0][0]
     query = f'UPDATE UserInfo SET Active = "No" WHERE UserID="{user_id}"'
     cursor.execute(query)
-
     db.commit()
     status = 'success'
-        
     return jsonify({'status': status})
 
 if __name__ == '__main__':

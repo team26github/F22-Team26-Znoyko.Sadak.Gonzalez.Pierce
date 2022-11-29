@@ -60,7 +60,7 @@
                 localhost_path: "http://localhost:5000",
                 path: null,
                 driver_selected: '',
-                decision: '',
+                decision: 'Accepted',
                 reason: ''
             };
         },
