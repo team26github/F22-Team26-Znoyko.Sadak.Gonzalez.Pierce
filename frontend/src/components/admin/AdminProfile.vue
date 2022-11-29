@@ -1,10 +1,16 @@
 <template>
     <div class="profile-container">
         <NavBar :usertype="user_type" :username="username"></NavBar>
+
+        <!-- Row for holding admin User ID, admin Username, and update username button -->
         <div class="row">
+
+            <!-- Container for displaying admin User ID -->
             <div class="user-id-container">
                 <p><strong>UserID: </strong>{{ user_id }}</p>
             </div>
+
+            <!-- Container for displaying admin Username -->
             <div class="username-container">
                 <div class="username">
                     <p><strong>Username: </strong>{{ username }}</p>
@@ -12,7 +18,11 @@
                 </div>
             </div>
         </div>
+
+        <!-- Row for holding admin Password and update/show password buttons -->
         <div class="row">
+
+            <!-- Container for displaying admin password -->
             <div class="password-container">
                 <div class="password">
                     <p><strong>Password: </strong>{{ password_text }}</p>
@@ -21,13 +31,19 @@
                 </div>
             </div>
         </div>
+
+        <!-- Row for holding admin Email, admin Usertype (Admin), and update button -->
         <div class="row">
+
+            <!-- Container for displaying admin Email -->
             <div class="email-container">
                 <div class="email">
                     <p><strong>Email: </strong>{{ email }}</p>
                     <button @click="edit_email"><span>Edit Email</span></button>
                 </div>
             </div>
+
+            <!-- Container for displaying admin Usertype (Admin) -->
             <div class="user-type-container">
                 <p><strong>UserType: </strong>{{ user_type }}</p>
             </div>
@@ -40,8 +56,11 @@
     import NavBar from '../misc/NavBar.vue';
 
     export default {
+
+        // Component name
         name: 'admin-profile',
 
+        // Component specific variables and data
         data() {
             return {
                 user_id: null,
@@ -61,10 +80,17 @@
             };
         },
 
+        // Mounted function is used for doing operations right after the component
+        // Is mounted and right before the component is shown to the user
         mounted() {
+
+            // Gets admin username from route url
             this.username = this.$route.params.username;
+
+            // Sets path for axios API calls to either localhost or production
             this.path = this.localhost_path;
 
+            // Axios API call to python backend to get user information
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
                 .then((res) => {
                     if (res.data.status === 'success') {
@@ -82,6 +108,7 @@
                 })
         },
 
+        // Component specific methods
         methods: {
             show_password() {
                 if (this.password_active) {
@@ -96,11 +123,18 @@
                 }
             },
 
+            // Method to change admin username
             edit_username() {
+
+                // Getting new username from user
                 let new_username = window.prompt("Enter new username");
+
+                // Axios API call to python backend to check for duplicate username
                 axios.get(this.path + '/edit', {params: {request: 'username', username: new_username}})
                     .then((res) => {
-                        if (res.data.status === 'success') {       
+                        if (res.data.status === 'success') {      
+                            
+                            // Axios API call to python backend to update username
                             axios.post(this.path + '/edit', null, {params: {request: 'username', username: new_username, userid: this.user_id}})
                                 .then((res) => {
                                     if (res.data.status === "success") {
@@ -126,7 +160,10 @@
                     })
             },
 
+            // Method to change admin password
             edit_password() {
+
+                // Getting new password from user and checking to make sure it meets password requirements
                 window.alert("Password must contain at least one upper and lower case letter, at least one number, and at least one special character.")
                 let new_password = window.prompt("Enter new password");
                 var minMaxLength = /^[\s\S]{8,20}$/,
@@ -134,8 +171,12 @@
                     lower  = /[a-z]/,
                     number = /[0-9]/,
                     special = /[ !"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/;
+                
+                // Axios API call to python backend to change password
                 axios.post(this.path + '/edit', null, {params: {request: 'password', password: new_password, userid: this.user_id}})
                     .then((res) => {
+
+                        // Checking password to make sure it meets all requirements
                         if (minMaxLength.test(new_password) && upper.test(new_password) && lower.test(new_password) && number.test(new_password) && special.test(new_password)) {
                             res.data.status = "success";
                         }
@@ -143,6 +184,7 @@
                             res.data.status = "false";
                         }
 
+                        // Checking to see if new password is different from old password
                         if(new_password === this.password){
                             window.alert("New password must be different than old password")
                             res.data.status = "failure"
@@ -162,11 +204,18 @@
                     })
             },
 
+            // Method to change admin email
             edit_email() {
+
+                // Getting new email from user
                 let new_email = window.prompt("Enter new email");
+
+                // Axios API call to python backend to check for duplicate email
                 axios.get(this.path + '/edit', {params: {request: 'email', email: new_email}})
                 .then((res) => {
                     if (res.data.status === "success") {
+
+                        // Axios API call to python backend to change user email
                         axios.post(this.path + '/edit', null, {params: {request: 'email', email: new_email, userid: this.user_id}})
                         .then((res) => {
                             if (res.data.status === "success") {
@@ -189,6 +238,7 @@
             }
         },
 
+        // Components used from external files
         components: { NavBar }
     }
 </script>
