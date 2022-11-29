@@ -153,7 +153,7 @@
                     })
                     .catch((err) => {
                         console.log(err);
-                    })            
+                    });  
             },
 
             // Method used for user search functionality
