@@ -3,7 +3,7 @@
         <nav-bar :usertype="user_type" :username="username"></nav-bar>
         <div class="row">
             <div class="points">
-                <p><strong>Points: </strong>{{ default_points }}</p>
+                <p><strong>Points: </strong>{{ num_points }}</p>
             </div>
         </div>
     </div>
@@ -11,23 +11,52 @@
 
 <script>
     import NavBar from '@/components/misc/NavBar.vue';
+    import axios from 'axios';
+
     export default {
+
+        // Component name
         name: 'driver-dashboard',
 
+        // Component specific variables and data
         data() {
             return {
                 dashboard_name: `${this.username}'s Dashboard`,
                 username: null,
                 user_type: 'driver',
                 active: false,
-                default_points: 0
+                num_points: null,
+                production_path: "http://18.191.136.200",
+                localhost_path: "http://localhost:5000",
+                path: null
             }
         },
 
+        // Mounted function is used for doing operations right after the component
+        // Is mounted and right before the component is shown to the user
         mounted() {
+
+            // Getting username for user from URL and setting path for axios API calls
+            // to either localhost or production
             this.username = this.$route.params.username;
+            this.path = this.localhost_path;
+
+            // Axios API call to python backend to get current user information
+            axios.get(this.path + '/userinfo', {params: {username: this.username}})
+                .then((res) => {
+                    if (res.data.status === 'success') {
+                        this.num_points = res.data.results[0][11];
+                    }
+                    else {
+                        console.log('Unsuccessful');
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
         },
 
+        // Components used from external files
         components: {
             "nav-bar": NavBar
         },
