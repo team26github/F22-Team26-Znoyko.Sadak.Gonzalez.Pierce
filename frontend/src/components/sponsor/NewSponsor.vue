@@ -94,42 +94,50 @@
             // Method to create a new sponsor upon submission button click
             create_sponsor() {
 
-                // Axios API call to python backend to check for duplicate users
-                axios.get(this.path + '/new-user', {params: {username: this.sponsor_username, email: this.email}})
-                    .then((res) => {
-                        if (res.data.status === 'success') {
-                            if (res.data.results.length === 0) {
-                                console.log(res.data);
+                // Checking to see if all fields are filled out before submission
+                if (this.first_name !== '' && this.last_name !== '' && this.sponsor_username !== '' && this.email !== '' && this.password !== '') {
 
-                                // Axios API call to python backend to add new sponsor to database
-                                axios.post(this.path + '/new-sponsor', null, {params: {email: this.email, first_name: this.first_name, last_name: this.last_name, username: this.sponsor_username, password: this.password, sponsor: this.sponsor_selected}}) 
-                                    .then((res) => {
-                                        if (res.data.status === "success") {
-                                            window.alert("Sponsor successfully created");
-                                        }
-                                        else {
-                                            window.alert("Cannot create sponsor.");
-                                        }
-                                    })
-                                    .catch((error) => {
-                                        // esling-disable-next-line
-                                        console.log(error);
-                                    });
+                // Axios API call to python backend to check for duplicate users
+                    axios.get(this.path + '/new-user', {params: {username: this.sponsor_username, email: this.email}})
+                        .then((res) => {
+                            if (res.data.status === 'success') {
+
+                                // If there are no duplicate users, then create a new sponsor
+                                if (res.data.results.length === 0) {
+
+                                    // Axios API call to python backend to add new sponsor to database
+                                    axios.post(this.path + '/new-sponsor', null, {params: {email: this.email, first_name: this.first_name, last_name: this.last_name, username: this.sponsor_username, password: this.password, sponsor: this.sponsor_selected}}) 
+                                        .then((res) => {
+                                            if (res.data.status === "success") {
+                                                window.alert("Sponsor successfully created");
+                                            }
+                                            else {
+                                                window.alert("Cannot create sponsor.");
+                                            }
+                                        })
+                                        .catch((error) => {
+                                            // esling-disable-next-line
+                                            console.log(error);
+                                        });
+                                }
+                                else if (res.data.results.length === 1) {
+                                    window.alert(`${res.data.results[0]} is already taken`);
+                                }
+                                else if (res.data.results.length === 2) {
+                                    window.alert(`${res.data.results[0]} and ${res.data.results[1]} are already taken`);
+                                }
                             }
-                            else if (res.data.results.length === 1) {
-                                window.alert(`${res.data.results[0]} is already taken`);
+                            else {
+                                console.log('Failure');
                             }
-                            else if (res.data.results.length === 2) {
-                                window.alert(`${res.data.results[0]} and ${res.data.results[1]} are already taken`);
-                            }
-                        }
-                        else {
-                            console.log('Failure');
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                }
+                else {
+                    window.alert("All fields must be filled out to create a new sponsor");
+                }
             },
         },
 

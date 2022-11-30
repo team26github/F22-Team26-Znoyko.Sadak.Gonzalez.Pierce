@@ -109,7 +109,6 @@ def reset_passwd():
             'results': results
         })
     else:
-        # print("nothing")
         return jsonify({
             'status': 'failure',
             'results': results
@@ -150,7 +149,6 @@ def edit():
         if request.args.get('request', '') == 'email':
             email = request.args.get('email', '')
             userid = request.args.get('userid', '')
-            # print("UserID: "+userid+" Email:"+email)
             query = f'UPDATE UserInfo SET Email = "{email}" WHERE UserID = {userid}'
             cursor.execute(query)
             db.commit()
@@ -514,7 +512,6 @@ def new_sponser():
     query = f'SELECT UserID FROM UserInfo WHERE email="{email}"'
     cursor.execute(query)
     results = cursor.fetchall()
-    print(results)
     sponsor_id=results[0][0]
     
     query = f'UPDATE UserInfo SET SponsorID = "{sponsor_id}" WHERE email="{email}"'
