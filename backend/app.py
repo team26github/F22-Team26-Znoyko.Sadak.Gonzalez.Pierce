@@ -366,7 +366,10 @@ def apply():
 
 @app.route('/get-catalog-items', methods=['GET'])
 def get_catalog_items():
-    if EXPIRES < datetime.now():
+    try:
+        if EXPIRES < datetime.now():
+            get_new_token()
+    except:
         get_new_token()
     
     sandbox_url = 'https://api.sandbox.ebay.com/buy/browse/v1/item_summary/search?'
@@ -785,5 +788,5 @@ def deactivateadmin():
     return jsonify({'status': status})
 
 if __name__ == '__main__':
-    #get_new_token()
-    app.run(debug=True)
+    get_new_token()
+    app.run(debug=False)

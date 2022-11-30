@@ -89,7 +89,7 @@
                 drivers: [],
                 allData: null,
                 localhost_path: 'http://localhost:5000',
-                production_path: "http://18.191.136.200",
+                production_path: "https://www.spacebarcowboys.com",
                 path: null
             };
         },
@@ -101,13 +101,12 @@
             // Getting username from route URL and setting Axios API path to either
             // localhost or production
             this.username = this.$route.params.username;
-            this.path = this.localhost_path;
+            this.path = this.production_path;
 
             // Axios API call to python backend to get current user information
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
                 .then((res) => {
                     if (res.data.status === 'success') {
-                        console.log(res.data);
                         this.user_id = res.data.results[0][0];
                         this.password = res.data.results[0][1];
                         this.email = res.data.results[0][3];
@@ -125,7 +124,6 @@
             fetchAllData(){ //show records
                 axios.get(this.path + '/', {params: {request: 'username'}})
                 .then(function(response){
-                        console.log(response);
                         this.allData = response.data.members;
                 });
             },

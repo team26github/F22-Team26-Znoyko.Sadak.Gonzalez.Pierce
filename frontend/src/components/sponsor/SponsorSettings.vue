@@ -197,7 +197,7 @@
                     'DollarPointValue': null
                 },
                 update_driver: {},
-                production_path: "http://18.191.136.200",
+                production_path: "https://www.spacebarcowboys.com",
                 localhost_path: "http://localhost:5000",
                 path: null
             };
@@ -210,7 +210,7 @@
             // Getting username for user from URL and setting path for axios API calls
             // to either localhost or production
             this.username = this.$route.params.username;
-            this.path = this.localhost_path;
+            this.path = this.production_path;
 
             // Axios API call to python backend to get current user information
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
@@ -557,7 +557,7 @@
         display: flex;
         flex-direction: column;
         width: 30%;
-        height: 80%;
+        height: 50%;
         overflow-y: auto;
         border-style: solid;
         border-color: black;

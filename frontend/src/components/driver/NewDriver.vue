@@ -69,7 +69,7 @@
                 user_type: '',
                 sponsors: [],
                 sponsor_selected: '',
-                production_path: "http://18.191.136.200",
+                production_path: "https://www.spacebarcowboys.com",
                 localhost_path: "http://localhost:5000",
                 path: null
             };
@@ -82,7 +82,7 @@
             // Getting username from route URL and setting Axios API path to either
             // localhost or production
             this.username = this.$route.params.username;
-            this.path = this.localhost_path;
+            this.path = this.production_path;
 
             // Axios API call to python backend to get current user information
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
@@ -136,7 +136,6 @@
                 // Axios API call to python backend to check for duplicate users
                     axios.get(this.path + '/new-user', {params: {username: this.driver_username, email: this.email}})
                         .then((res) => {
-                            console.log(res.data);
                             if (res.data.status === 'success') {
 
                                 // If there are no duplicate users, then create a new driver

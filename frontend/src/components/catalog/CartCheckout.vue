@@ -96,7 +96,7 @@
                 items: [],
                 items_total: '',
                 points_total: '',
-                production_path: "http://18.191.136.200",
+                production_path: "https://www.spacebarcowboys.com",
                 localhost_path: "http://localhost:5000",
                 path: null,
                 reason:'Purchase',
@@ -117,7 +117,7 @@
             this.items_total = this.items.length;
 
             // Setting Axios API path to either local host or production
-            this.path = this.localhost_path;
+            this.path = this.production_path;
 
             // Axios API call to python backend to get user information from the database
             axios.get(this.path + '/userinfo', {params: {username: this.username}})

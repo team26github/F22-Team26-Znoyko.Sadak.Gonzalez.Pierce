@@ -316,7 +316,7 @@
             update_driver: {},
             update_sponsor: {},
             update_admin: {},
-            production_path: "http://18.191.136.200",
+            production_path: "https://www.spacebarcowboys.com",
             localhost_path: "http://localhost:5000",
             path: null
         };
@@ -326,7 +326,7 @@
     // Is mounted and right before the component is shown to the user
     mounted() {
         this.username = this.$route.params.username;
-        this.path = this.localhost_path;
+        this.path = this.production_path;
         this.get_info();
     },
 
@@ -401,7 +401,6 @@
         },
 
         display_sponsor_fees() {
-            console.log(this.selected_sponsor_fee);
             if (this.selected_sponsor_fee === 'All') return this.sponsor_fee_info;
             else {
                 for (let s of this.sponsor_fee_info) {

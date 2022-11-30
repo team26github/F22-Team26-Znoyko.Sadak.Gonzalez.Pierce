@@ -42,7 +42,7 @@
             disabled: false,
             time_to_wait: 0,
             time: 0,
-            production_path: "http://18.191.136.200",
+            production_path: "https://www.spacebarcowboys.com",
             localhost_path: "http://localhost:5000",
             path: null
         };
@@ -51,7 +51,7 @@
     // Mounted function is used for doing operations right after the component
     // Is mounted and right before the component is shown to the user
     mounted() {
-      this.path = this.localhost_path;
+      this.path = this.production_path;
     },
 
     // Component specific methods

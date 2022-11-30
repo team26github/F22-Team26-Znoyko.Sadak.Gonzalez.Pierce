@@ -58,7 +58,7 @@
                 cost: 0.0,
                 num_in_cart: 0,
                 catalog_items: null,
-                production_path: "http://18.191.136.200",
+                production_path: "https://www.spacebarcowboys.com",
                 localhost_path: "http://localhost:5000",
                 path: null
             };
@@ -68,7 +68,7 @@
         // Is mounted and right before the component is shown to the user
         mounted() {
             this.username = this.$route.params.username;
-            this.path = this.localhost_path;
+            this.path = this.production_path;
 
             // Axios API call to python backend to get user information from the database
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
