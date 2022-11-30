@@ -333,7 +333,11 @@
         this.path = this.localhost_path;
         axios.get(this.path + '/userinfo', {params: {username: this.username}})
             .then((res) => {
-                if (res.data.status === 'success') this.get_info();
+                if (res.data.status === 'success') { 
+                    if (res.data.results[0][0].toString() !== sessionStorage.getItem('userID')) this.$router.push({name: 'login'});
+
+                    this.get_info();
+                }
                 else {
                     window.alert('Could not find this user, logging out now');
                     this.$router.push({name: 'login'});

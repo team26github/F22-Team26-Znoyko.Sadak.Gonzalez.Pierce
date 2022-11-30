@@ -78,6 +78,8 @@
                 .then((res) => {
                     if (res.data.status === 'success') {
                         this.user_type = res.data.results[0][2];
+
+                        if (res.data.results[0][0].toString() !== sessionStorage.getItem('userID')) this.$router.push({name: 'login'});
                     }
                     else {
                         window.alert('Could not find this user, logging out now');

@@ -113,6 +113,7 @@
                     this.password = res.data.results[0][1];
                     this.user_type = res.data.results[0][2];
                     sessionStorage.setItem('loggedIn', 'true');
+                    sessionStorage.setItem('userID', res.data.results[0][0]);
                     this.$router.push({
                         name: `${this.user_type.toLowerCase()}-dashboard`,
                         params: { username: this.username }

@@ -113,6 +113,9 @@
                 .then((res) => {
                     if (res.data.status === 'success') {
                         this.user_id = res.data.results[0][0];
+
+                        if (sessionStorage.getItem('userID') !== this.user_id.toString()) this.$router.push({name: 'login'});
+
                         this.fetchUsers();
                     }
                     else {

@@ -137,6 +137,9 @@
                         this.user_id = res.data.results[0][0];
                         this.password = res.data.results[0][1];
                         this.email = res.data.results[0][3];
+
+                        if (sessionStorage.getItem('userID') !== this.user_id.toString()) this.$router.push({name: 'login'});
+
                         this.get_purchase_info();
 
                     }

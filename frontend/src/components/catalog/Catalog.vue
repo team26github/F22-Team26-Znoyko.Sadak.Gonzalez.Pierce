@@ -85,6 +85,9 @@
                             this.user_type = res.data.results[0][2];
                             this.point_conversion = res.data.results[0][8];
                             this.catalog_filters = res.data.results[0][10].split(',');
+
+                            if (sessionStorage.getItem('userID') !== this.user_id.toString()) this.$router.push({name: 'login'});
+
                             this.get_catalog_items();
                         }
                         else {

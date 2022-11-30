@@ -223,6 +223,26 @@ def get_user_info():
             'results': results
         })
 
+@app.route('/get-drivers-admin', methods=['GET'])
+def get_drivers_admin():
+    cursor = db.cursor()
+
+    query = f'SELECT FullName FROM UserInfo WHERE UserType = "Driver"'
+
+    cursor.execute(query)
+    results = cursor.fetchall()
+
+    if len(results) > 0:
+        return jsonify({
+            'status': 'success',
+            'results': results
+        })
+    else:
+        return jsonify({
+            'status': 'failure',
+            'results': results
+        })
+
 @app.route('/get-drivers', methods=['GET'])
 def get_drivers():
     user_id = request.args.get('user_id', '')

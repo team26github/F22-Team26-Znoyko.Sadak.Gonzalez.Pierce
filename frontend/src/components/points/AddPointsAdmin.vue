@@ -81,7 +81,7 @@
             fetchDrivers() {
 
                 // Axios API call to python backend to get available drivers
-                axios.get(this.path + '/get-drivers', { params: { user_id: this.user_id } })
+                axios.get(this.path + '/get-drivers-admin')
                     .then((res) => {
                         if (res.data.status === 'success') {
                             for (const name of res.data.results) {
@@ -132,6 +132,9 @@
                 .then((res) => {
                     if (res.data.status === 'success') {
                         this.user_id = res.data.results[0][0];
+
+                        if (sessionStorage.getItem('userID') !== this.user_id.toString()) this.$router.push({name: 'login'});
+
                         this.fetchDrivers();
                     }
                     else {

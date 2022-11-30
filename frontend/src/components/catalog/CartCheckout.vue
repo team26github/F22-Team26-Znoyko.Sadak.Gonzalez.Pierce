@@ -134,6 +134,8 @@
                         this.sponsor_id = res.data.results[0][7];
                         this.points_balance = res.data.results[0][11];
 
+                        if (sessionStorage.getItem('userID') !== this.user_id.toString()) this.$router.push({name: 'login'});
+
                         // Determining if the user has enough points to purchase their items
                         if ( (this.points_balance < this.points_total) || (0 == this.points_total) ){
                             this.sufficient_balance = false;

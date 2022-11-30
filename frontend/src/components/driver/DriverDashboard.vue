@@ -49,6 +49,8 @@
                 .then((res) => {
                     if (res.data.status === 'success') {
                         this.num_points = res.data.results[0][11];
+
+                        if (res.data.results[0][0].toString() !== sessionStorage.getItem('userID')) this.$router.push({name: 'login'});
                     }
                     else {
                         window.alert('Could not find this user, logging out now');
