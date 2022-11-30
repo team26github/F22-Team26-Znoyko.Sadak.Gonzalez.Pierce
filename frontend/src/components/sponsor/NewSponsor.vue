@@ -32,7 +32,7 @@
             </div>
 
             <!-- Submit button to create a new sponsor -->
-            <button type="submit" class="btn" @click="create_sponsor" >Create</button> 
+            <button type="button" class="btn" @click="create_sponsor" >Create</button> 
         </form>
     </div>
 
@@ -77,7 +77,6 @@
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
                 .then((res) => {
                     if (res.data.status === 'success') {
-                        console.log(res.data);
                         this.user_type = res.data.results[0][2];
                     }
                     else {
@@ -100,12 +99,13 @@
                     .then((res) => {
                         if (res.data.status === 'success') {
                             if (res.data.results.length === 0) {
+                                console.log(res.data);
 
                                 // Axios API call to python backend to add new sponsor to database
-                                axios.post(this.path + '/new-driver', null, {params: {email: this.email, first_name: this.first_name, last_name: this.last_name, username: this.sponsor_username, password: this.password, sponsor: this.sponsor_selected}}) 
+                                axios.post(this.path + '/new-sponsor', null, {params: {email: this.email, first_name: this.first_name, last_name: this.last_name, username: this.sponsor_username, password: this.password, sponsor: this.sponsor_selected}}) 
                                     .then((res) => {
                                         if (res.data.status === "success") {
-                                            console.log("success");
+                                            window.alert("Sponsor successfully created");
                                         }
                                         else {
                                             window.alert("Cannot create sponsor.");

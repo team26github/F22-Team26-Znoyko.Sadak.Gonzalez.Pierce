@@ -4,10 +4,10 @@
         <form style="max-width:800px;margin:auto">
             <h1>New Driver</h1>
 
-            <div>Select Sponsor: {{ selected }}</div>
+            <div>Select Sponsor:</div>
 
             <!-- Sponsor selection dropdown menu -->
-            <select name = "selected" @change="onChange($event)" v-model="selected" required>
+            <select name = "selected" @change="onChange($event)" v-model="sponsor_selected" required>
                 <option disabled value="">Please select one sponsor you would like to apply to</option>
                 <option v-for="sponsor in sponsors" :key="sponsor">{{sponsor[0]}}</option>
             </select>
@@ -40,7 +40,7 @@
             </div>
 
             <!-- Submit button to create a new driver -->
-            <button type="submit" class="btn" @click="create_driver" >Create</button> 
+            <button type="button" class="btn" @click="create_driver" >Create</button> 
         </form>
     </div>
 
@@ -133,6 +133,7 @@
                 // Axios API call to python backend to check for duplicate users
                 axios.get(this.path + '/new-user', {params: {username: this.driver_username, email: this.email}})
                     .then((res) => {
+                        console.log(res.data);
                         if (res.data.status === 'success') {
                             if (res.data.results.length === 0) {
 
@@ -140,7 +141,7 @@
                                 axios.post(this.path + '/new-driver', null, {params: {email: this.email, first_name: this.first_name, last_name: this.last_name, username: this.driver_username, password: this.password, sponsor: this.sponsor_selected}}) 
                                     .then((res) => {
                                         if (res.data.status === "success") {
-                                            console.log("success");
+                                            window.alert("Driver successfully created");
                                         }
                                         else {
                                             window.alert("Cannot create driver.");
