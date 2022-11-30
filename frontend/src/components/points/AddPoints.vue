@@ -119,6 +119,9 @@
         // Is mounted and right before the component is shown to the user
         mounted() {
 
+            // Preventing users from accessing the application without logging in
+            if (sessionStorage.getItem('loggedIn') !== 'true') this.$router.push({name: 'login'});
+
             // Getting username from route URL and setting Axios API path to either
             // localhost or production
             this.path = this.localhost_path;
