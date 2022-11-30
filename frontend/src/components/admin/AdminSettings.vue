@@ -326,8 +326,18 @@
     // Is mounted and right before the component is shown to the user
     mounted() {
         this.username = this.$route.params.username;
-        this.path = this.production_path;
-        this.get_info();
+        this.path = this.localhost_path;
+        axios.get(this.path + '/userinfo', {params: {username: this.username}})
+            .then((res) => {
+                if (res.data.status === 'success') this.get_info();
+                else {
+                    window.alert('Could not find this user, logging out now');
+                    this.$router.push({name: 'login'});
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     },
 
     // Component specific methods

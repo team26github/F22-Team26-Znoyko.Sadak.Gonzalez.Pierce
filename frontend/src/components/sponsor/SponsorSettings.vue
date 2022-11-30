@@ -210,7 +210,7 @@
             // Getting username for user from URL and setting path for axios API calls
             // to either localhost or production
             this.username = this.$route.params.username;
-            this.path = this.production_path;
+            this.path = this.localhost_path;
 
             // Axios API call to python backend to get current user information
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
@@ -225,7 +225,8 @@
                         this.get_info();
                     }
                     else {
-                        console.log("Unsuccessful");
+                        window.alert('Could not find this user, logging out now');
+                        this.$router.push({name: 'login'});
                     }
                 });
         },

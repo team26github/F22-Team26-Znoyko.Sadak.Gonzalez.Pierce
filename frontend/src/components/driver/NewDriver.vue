@@ -82,7 +82,7 @@
             // Getting username from route URL and setting Axios API path to either
             // localhost or production
             this.username = this.$route.params.username;
-            this.path = this.production_path;
+            this.path = this.localhost_path;
 
             // Axios API call to python backend to get current user information
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
@@ -92,7 +92,8 @@
                         this.fetchSponsors();
                     }
                     else {
-                        console.log('Unsuccessful');
+                        window.alert('Could not find this user, logging out now');
+                        this.$router.push({name: 'login'});
                     }
                 })
                 .catch((error) => {
@@ -131,7 +132,7 @@
             create_driver() {                 
 
                 // Checking to see if all fields are filled out before submission
-                if (this.first_name !== '' && this.last_name !== '' && this.driver_username !== '' && this.email !== '' && this.password !== '') {
+                if (this.first_name !== '' && this.last_name !== '' && this.driver_username !== '' && this.email !== '' && this.password !== '' && this.sponsor_selected !== '') {
 
                 // Axios API call to python backend to check for duplicate users
                     axios.get(this.path + '/new-user', {params: {username: this.driver_username, email: this.email}})
@@ -146,6 +147,12 @@
                                         .then((res) => {
                                             if (res.data.status === "success") {
                                                 window.alert("Driver successfully created");
+                                                this.first_name = '';
+                                                this.last_name = '';
+                                                this.driver_username = '';
+                                                this.email = '';
+                                                this.password = '';
+                                                this.sponsor_selected = '';
                                             }
                                             else {
                                                 window.alert("Cannot create driver.");

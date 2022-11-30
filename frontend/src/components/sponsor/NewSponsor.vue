@@ -71,7 +71,7 @@
             // Getting username from route URL and setting Axios API path to either
             // localhost or production
             this.username = this.$route.params.username;
-            this.path = this.production_path;
+            this.path = this.localhost_path;
 
             // Axios API call to python backend to get current user information
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
@@ -80,7 +80,8 @@
                         this.user_type = res.data.results[0][2];
                     }
                     else {
-                        console.log('Unsuccessful');
+                        window.alert('Could not find this user, logging out now');
+                        this.$router.push({name: 'login'});
                     }
                 })
                 .catch((error) => {
@@ -110,6 +111,11 @@
                                         .then((res) => {
                                             if (res.data.status === "success") {
                                                 window.alert("Sponsor successfully created");
+                                                this.first_name = '';
+                                                this.last_name = '';
+                                                this.sponsor_username = '';
+                                                this.email = '';
+                                                this.password = '';
                                             }
                                             else {
                                                 window.alert("Cannot create sponsor.");

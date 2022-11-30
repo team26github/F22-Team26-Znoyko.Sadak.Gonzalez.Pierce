@@ -20,7 +20,7 @@
     </div>
 
     <!-- Container to hold items in the catalog -->
-    <div class="catalog-container" :key="update">
+    <div v-if="(catalog_items.length > 0)" class="catalog-container" :key="update">
 
         <!-- Item(s) in the catalog available for user purchase. If there are more than one catalog item available
             for purchase, then multiple containers will be rendered -->
@@ -31,6 +31,9 @@
             <a :href="item.itemWebUrl" target="_blank">Check it Out!</a>
             <button @click="add_to_cart(item)">Add to Cart</button>
         </div>
+    </div>
+    <div v-else class="catalog-container-empty">
+        <h1>Nothing Available!</h1>
     </div>
 </template>
 
@@ -57,7 +60,7 @@
                 cart: [],
                 cost: 0.0,
                 num_in_cart: 0,
-                catalog_items: null,
+                catalog_items: [],
                 production_path: "https://www.spacebarcowboys.com",
                 localhost_path: "http://localhost:5000",
                 path: null
@@ -68,7 +71,7 @@
         // Is mounted and right before the component is shown to the user
         mounted() {
             this.username = this.$route.params.username;
-            this.path = this.production_path;
+            this.path = this.localhost_path;
 
             // Axios API call to python backend to get user information from the database
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
@@ -81,7 +84,8 @@
                             this.get_catalog_items();
                         }
                         else {
-                            console.log('Unsuccessful');
+                            window.alert('Could not find this user, logging out now');
+                            this.$router.push({name: 'login'});
                         }
                     })
                     .catch((error) => {
@@ -251,6 +255,19 @@
     .catalog-container {
         display: flex;
         flex-wrap: wrap;
+        width: 96.5vw;
+        height: 87vh;
+        border-style: solid;
+        border-color: black;
+        gap: 1rem;
+        padding: 1rem;
+        overflow-y: auto;
+        background-color:palegreen;
+    }
+
+    .catalog-container-empty {
+        display: grid;
+        place-items: center;
         width: 96.5vw;
         height: 87vh;
         border-style: solid;

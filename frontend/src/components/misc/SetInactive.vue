@@ -102,7 +102,7 @@
 
             // Getting username from route URL and setting Axios API path to either
             // localhost or production
-            this.path = this.production_path;
+            this.path = this.localhost_path;
             this.username = this.$route.params.username;
 
             // Axios API call to python backend to get current user information
@@ -113,7 +113,8 @@
                         this.fetchDrivers();
                     }
                     else {
-                        console.log('Unsuccessful');
+                        window.alert('Could not find this user, logging out now');
+                        this.$router.push({name: 'login'});
                     }
                 })
                 .catch((error) => {

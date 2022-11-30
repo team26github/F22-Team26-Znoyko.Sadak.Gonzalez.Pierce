@@ -788,5 +788,4 @@ def deactivateadmin():
     return jsonify({'status': status})
 
 if __name__ == '__main__':
-    get_new_token()
-    app.run(debug=False)
+    app.run(debug=True)
