@@ -130,42 +130,51 @@
             // Method to add a new driver to the database
             create_driver() {                 
 
-                // Axios API call to python backend to check for duplicate users
-                axios.get(this.path + '/new-user', {params: {username: this.driver_username, email: this.email}})
-                    .then((res) => {
-                        console.log(res.data);
-                        if (res.data.status === 'success') {
-                            if (res.data.results.length === 0) {
+                // Checking to see if all fields are filled out before submission
+                if (this.first_name !== '' && this.last_name !== '' && this.driver_username !== '' && this.email !== '' && this.password !== '') {
 
-                                // Axios API call to python backend to add new driver to database
-                                axios.post(this.path + '/new-driver', null, {params: {email: this.email, first_name: this.first_name, last_name: this.last_name, username: this.driver_username, password: this.password, sponsor: this.sponsor_selected}}) 
-                                    .then((res) => {
-                                        if (res.data.status === "success") {
-                                            window.alert("Driver successfully created");
-                                        }
-                                        else {
-                                            window.alert("Cannot create driver.");
-                                        }
-                                    })
-                                    .catch((error) => {
-                                        // esling-disable-next-line
-                                        console.log(error);
-                                    });
+                // Axios API call to python backend to check for duplicate users
+                    axios.get(this.path + '/new-user', {params: {username: this.driver_username, email: this.email}})
+                        .then((res) => {
+                            console.log(res.data);
+                            if (res.data.status === 'success') {
+
+                                // If there are no duplicate users, then create a new driver
+                                if (res.data.results.length === 0) {
+
+                                    // Axios API call to python backend to add new driver to database
+                                    axios.post(this.path + '/new-driver', null, {params: {email: this.email, first_name: this.first_name, last_name: this.last_name, username: this.driver_username, password: this.password, sponsor: this.sponsor_selected}}) 
+                                        .then((res) => {
+                                            if (res.data.status === "success") {
+                                                window.alert("Driver successfully created");
+                                            }
+                                            else {
+                                                window.alert("Cannot create driver.");
+                                            }
+                                        })
+                                        .catch((error) => {
+                                            // esling-disable-next-line
+                                            console.log(error);
+                                        });
+                                }
+                                else if (res.data.results.length === 1) {
+                                    window.alert(`${res.data.results[0]} is already taken`);
+                                }
+                                else if (res.data.results.length === 2) {
+                                    window.alert(`${res.data.results[0]} and ${res.data.results[1]} are already taken`);
+                                }
                             }
-                            else if (res.data.results.length === 1) {
-                                window.alert(`${res.data.results[0]} is already taken`);
+                            else {
+                                console.log('Failure');
                             }
-                            else if (res.data.results.length === 2) {
-                                window.alert(`${res.data.results[0]} and ${res.data.results[1]} are already taken`);
-                            }
-                        }
-                        else {
-                            console.log('Failure');
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                }
+                else {
+                    window.alert("All fields must be filled out to create a new driver");
+                }
             }
         },
 
