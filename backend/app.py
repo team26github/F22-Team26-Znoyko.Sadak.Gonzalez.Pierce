@@ -353,7 +353,7 @@ def apply():
     username = request.args.get('username', '')
     passwd = request.args.get('password', '')
     sponsor = request.args.get('sponsor', '')
-    query = f'SELECT UserID FROM UserInfo WHERE Username="{sponsor[3:-3]}"'
+    query = f'SELECT UserID FROM UserInfo WHERE Username="{sponsor}"'
     cursor.execute(query)
     results = cursor.fetchall()
     sponsor_id=results[0][0]
@@ -788,5 +788,5 @@ def deactivateadmin():
     return jsonify({'status': status})
 
 if __name__ == '__main__':
-    get_new_token()
-    app.run(debug=False)
+    #get_new_token()
+    app.run(debug=True)
