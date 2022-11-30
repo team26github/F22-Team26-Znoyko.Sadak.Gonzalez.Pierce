@@ -450,7 +450,7 @@ def new_driver():
     username = request.args.get('username', '')
     passwd = request.args.get('password', '')
     sponsor = request.args.get('sponsor', '')
-    query = f'SELECT UserID FROM UserInfo WHERE Username="{sponsor[3:-3]}"'
+    query = f'SELECT UserID FROM UserInfo WHERE Username="{sponsor}"'
     cursor.execute(query)
     results = cursor.fetchall()
     sponsor_id=results[0][0]
