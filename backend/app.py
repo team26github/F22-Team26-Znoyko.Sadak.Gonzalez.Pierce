@@ -515,6 +515,7 @@ def new_sponser():
     query = f'SELECT UserID FROM UserInfo WHERE email="{email}"'
     cursor.execute(query)
     results = cursor.fetchall()
+    print(results)
     sponsor_id=results[0][0]
     
     query = f'UPDATE UserInfo SET SponsorID = "{sponsor_id}" WHERE email="{email}"'

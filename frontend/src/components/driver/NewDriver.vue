@@ -141,7 +141,7 @@
                                 axios.post(this.path + '/new-driver', null, {params: {email: this.email, first_name: this.first_name, last_name: this.last_name, username: this.driver_username, password: this.password, sponsor: this.sponsor_selected}}) 
                                     .then((res) => {
                                         if (res.data.status === "success") {
-                                            console.log("success");
+                                            window.alert("Driver successfully created");
                                         }
                                         else {
                                             window.alert("Cannot create driver.");

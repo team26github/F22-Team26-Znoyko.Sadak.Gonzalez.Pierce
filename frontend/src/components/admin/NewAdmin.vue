@@ -83,7 +83,7 @@
                                 axios.post(this.path + '/new-admin', null, {params: {email: this.email, first_name: this.first_name, last_name: this.last_name, username: this.admin_username, password: this.password}}) 
                                     .then((res) => {
                                         if (res.data.status === "success") {
-                                            console.log("success");
+                                            window.alert("Admin successfully created");
                                         }
                                         else {
                                             window.alert("Cannot create admin.");
