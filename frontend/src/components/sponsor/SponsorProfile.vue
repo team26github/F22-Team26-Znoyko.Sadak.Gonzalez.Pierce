@@ -89,7 +89,7 @@
                 drivers: [],
                 allData: null,
                 localhost_path: 'http://localhost:5000',
-                production_path: "http://18.191.136.200",
+                production_path: "https://www.spacebarcowboys.com",
                 path: null
             };
         },
