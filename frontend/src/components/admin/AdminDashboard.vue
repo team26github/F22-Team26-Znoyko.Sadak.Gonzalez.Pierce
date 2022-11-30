@@ -28,7 +28,8 @@
 </template>
 
 <script>
-    import NavBar from '../misc/NavBar.vue';
+    import axios from 'axios';
+import NavBar from '../misc/NavBar.vue';
 
     export default {
 
@@ -42,7 +43,10 @@
                 username: null,
                 user_type: 'admin',
                 active: false,
-                points: 0
+                points: 0,
+                production_path: 'https://www.spacebarcowboys.com',
+                localhost_path: 'http://localhost:5000',
+                path: null
             }
         },
 
@@ -71,14 +75,31 @@
                     name: 'set-inactive-admins',
                     params: { username: this.username }
                 });
-            },
+            }
         },
 
         // Mounted function is used for doing operations right after the component
         // Is mounted and right before the component is shown to the user
         mounted() {
+
+            // Preventing users from accessing the application without logging in
+            if (sessionStorage.getItem('loggedIn') !== 'true') this.$router.push({name: 'login'});
+
             // Gets username of user from route url
             this.username = this.$route.params.username;
+            this.path = this.localhost_path;
+
+            axios.get(this.path + '/userinfo', {params: {username: this.username}})
+                .then((res) => {
+                    if (res.data.status !== 'success') {
+                        window.alert('Could not find this user, logging out now');
+                        this.$router.push({name: 'login'});
+                    }
+                    else if (res.data.results[0][0].toString() !== sessionStorage.getItem('userID')) this.$router.push({name: 'login'});
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
         },
 
         // Components used from external files

@@ -69,7 +69,7 @@
                 user_type: '',
                 sponsors: [],
                 sponsor_selected: '',
-                production_path: "http://18.191.136.200",
+                production_path: "https://www.spacebarcowboys.com",
                 localhost_path: "http://localhost:5000",
                 path: null
             };
@@ -78,6 +78,9 @@
         // Mounted function is used for doing operations right after the component
         // Is mounted and right before the component is shown to the user
         mounted() {
+
+            // Preventing users from accessing the application without logging in
+            if (sessionStorage.getItem('loggedIn') !== 'true') this.$router.push({name: 'login'});
 
             // Getting username from route URL and setting Axios API path to either
             // localhost or production
@@ -89,10 +92,14 @@
                 .then((res) => {
                     if (res.data.status === 'success') {
                         this.user_type = res.data.results[0][2];
+
+                        if (res.data.results[0][0].toString() !== sessionStorage.getItem('userID')) this.$router.push({name: 'login'});
+                        
                         this.fetchSponsors();
                     }
                     else {
-                        console.log('Unsuccessful');
+                        window.alert('Could not find this user, logging out now');
+                        this.$router.push({name: 'login'});
                     }
                 })
                 .catch((error) => {
@@ -131,12 +138,11 @@
             create_driver() {                 
 
                 // Checking to see if all fields are filled out before submission
-                if (this.first_name !== '' && this.last_name !== '' && this.driver_username !== '' && this.email !== '' && this.password !== '') {
+                if (this.first_name !== '' && this.last_name !== '' && this.driver_username !== '' && this.email !== '' && this.password !== '' && this.sponsor_selected !== '') {
 
                 // Axios API call to python backend to check for duplicate users
                     axios.get(this.path + '/new-user', {params: {username: this.driver_username, email: this.email}})
                         .then((res) => {
-                            console.log(res.data);
                             if (res.data.status === 'success') {
 
                                 // If there are no duplicate users, then create a new driver
@@ -147,6 +153,12 @@
                                         .then((res) => {
                                             if (res.data.status === "success") {
                                                 window.alert("Driver successfully created");
+                                                this.first_name = '';
+                                                this.last_name = '';
+                                                this.driver_username = '';
+                                                this.email = '';
+                                                this.password = '';
+                                                this.sponsor_selected = '';
                                             }
                                             else {
                                                 window.alert("Cannot create driver.");

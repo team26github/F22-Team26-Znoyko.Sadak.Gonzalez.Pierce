@@ -74,7 +74,7 @@
                 edit_username_active: false,
                 edit_password_active: false,
                 edit_email_active: false,
-                production_path: "http://18.191.136.200",
+                production_path: "https://www.spacebarcowboys.com",
                 localhost_path: "http://localhost:5000",
                 path: null
             };
@@ -83,6 +83,9 @@
         // Mounted function is used for doing operations right after the component
         // Is mounted and right before the component is shown to the user
         mounted() {
+
+            // Preventing users from accessing the application without logging in
+            if (sessionStorage.getItem('loggedIn') !== 'true') this.$router.push({name: 'login'});
 
             // Gets admin username from route url
             this.username = this.$route.params.username;
@@ -94,13 +97,15 @@
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
                 .then((res) => {
                     if (res.data.status === 'success') {
-                        console.log(res.data);
                         this.user_id = res.data.results[0][0];
                         this.password = res.data.results[0][1];
                         this.email = res.data.results[0][3];
+
+                        if (sessionStorage.getItem('userID') !== this.user_id.toString()) this.$router.push({name: 'login'});
                     }
                     else {
-                        console.log('Unsuccessful');
+                        window.alert('Could not find this user, logging out now');
+                        this.$router.push({name: 'login'});
                     }
                 })
                 .catch((error) => {

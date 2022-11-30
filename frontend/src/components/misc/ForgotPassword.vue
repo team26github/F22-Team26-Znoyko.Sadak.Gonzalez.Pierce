@@ -48,7 +48,7 @@
                 username: null,
                 email: null,
                 new_password: null,
-                production_path: "http://18.191.136.200",
+                production_path: "https://www.spacebarcowboys.com",
                 localhost_path: "http://localhost:5000",
                 path: null
             };

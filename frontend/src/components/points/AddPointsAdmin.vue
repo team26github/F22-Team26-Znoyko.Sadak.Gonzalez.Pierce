@@ -51,7 +51,7 @@
                 username: null,
                 user_id: null,
                 drivers: [],
-                production_path: "http://18.191.136.200",
+                production_path: "https://www.spacebarcowboys.com",
                 localhost_path: "http://localhost:5000",
                 path: null,
                 num_points: '',
@@ -81,7 +81,7 @@
             fetchDrivers() {
 
                 // Axios API call to python backend to get available drivers
-                axios.get(this.path + '/get-drivers', { params: { user_id: this.user_id } })
+                axios.get(this.path + '/get-drivers-admin')
                     .then((res) => {
                         if (res.data.status === 'success') {
                             for (const name of res.data.results) {
@@ -119,6 +119,9 @@
         // Is mounted and right before the component is shown to the user
         mounted() {
 
+            // Preventing users from accessing the application without logging in
+            if (sessionStorage.getItem('loggedIn') !== 'true') this.$router.push({name: 'login'});
+
             // Getting username from route URL and setting Axios API path to either
             // localhost or production
             this.path = this.localhost_path;
@@ -129,10 +132,14 @@
                 .then((res) => {
                     if (res.data.status === 'success') {
                         this.user_id = res.data.results[0][0];
+
+                        if (sessionStorage.getItem('userID') !== this.user_id.toString()) this.$router.push({name: 'login'});
+
                         this.fetchDrivers();
                     }
                     else {
-                        console.log('Unsuccessful');
+                        window.alert('Could not find this user, logging out now');
+                        this.$router.push({name: 'login'});
                     }
                 })
                 .catch((error) => {

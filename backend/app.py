@@ -223,6 +223,26 @@ def get_user_info():
             'results': results
         })
 
+@app.route('/get-drivers-admin', methods=['GET'])
+def get_drivers_admin():
+    cursor = db.cursor()
+
+    query = f'SELECT FullName FROM UserInfo WHERE UserType = "Driver"'
+
+    cursor.execute(query)
+    results = cursor.fetchall()
+
+    if len(results) > 0:
+        return jsonify({
+            'status': 'success',
+            'results': results
+        })
+    else:
+        return jsonify({
+            'status': 'failure',
+            'results': results
+        })
+
 @app.route('/get-drivers', methods=['GET'])
 def get_drivers():
     user_id = request.args.get('user_id', '')
@@ -366,7 +386,10 @@ def apply():
 
 @app.route('/get-catalog-items', methods=['GET'])
 def get_catalog_items():
-    if EXPIRES < datetime.now():
+    try:
+        if EXPIRES < datetime.now():
+            get_new_token()
+    except:
         get_new_token()
     
     sandbox_url = 'https://api.sandbox.ebay.com/buy/browse/v1/item_summary/search?'
@@ -795,5 +818,4 @@ def deactivateadmin():
     return jsonify({'status': status})
 
 if __name__ == '__main__':
-    #get_new_token()
     app.run(debug=True)

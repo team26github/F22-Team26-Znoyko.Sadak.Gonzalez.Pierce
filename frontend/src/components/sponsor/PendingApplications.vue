@@ -56,7 +56,7 @@
                 username: null,
                 user_id: null,
                 drivers: [],
-                production_path: "http://18.191.136.200",
+                production_path: "https://www.spacebarcowboys.com",
                 localhost_path: "http://localhost:5000",
                 path: null,
                 driver_selected: '',
@@ -129,6 +129,9 @@
         // Mounted function is used for doing operations right after the component
         // Is mounted and right before the component is shown to the user
         mounted() {
+
+            // Preventing users from accessing the application without logging in
+            if (sessionStorage.getItem('loggedIn') !== 'true') this.$router.push({name: 'login'});
 
             // Getting username from route URL and setting Axios API path to either
             // localhost or production

@@ -58,7 +58,7 @@
                 password: '',
                 email: '',
                 user_type: '',
-                production_path: "http://18.191.136.200",
+                production_path: "https://www.spacebarcowboys.com",
                 localhost_path: "http://localhost:5000",
                 path: null
             };
@@ -78,9 +78,12 @@
                 .then((res) => {
                     if (res.data.status === 'success') {
                         this.user_type = res.data.results[0][2];
+
+                        if (res.data.results[0][0].toString() !== sessionStorage.getItem('userID')) this.$router.push({name: 'login'});
                     }
                     else {
-                        console.log('Unsuccessful');
+                        window.alert('Could not find this user, logging out now');
+                        this.$router.push({name: 'login'});
                     }
                 })
                 .catch((error) => {
@@ -110,6 +113,11 @@
                                         .then((res) => {
                                             if (res.data.status === "success") {
                                                 window.alert("Sponsor successfully created");
+                                                this.first_name = '';
+                                                this.last_name = '';
+                                                this.sponsor_username = '';
+                                                this.email = '';
+                                                this.password = '';
                                             }
                                             else {
                                                 window.alert("Cannot create sponsor.");
