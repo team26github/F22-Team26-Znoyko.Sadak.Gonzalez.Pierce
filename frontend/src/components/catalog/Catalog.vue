@@ -118,42 +118,54 @@
                 // Axios API call to python backend to get catalog items from eBay
                 axios.get(this.path + '/get-catalog-items', {params: {keywords: keywords}})
                     .then((res) => {
-                        let results = res.data.results;
-                        let temp = res.data.purchased;
-                        let purchased = [];                    
-                        
-                        // Getting previously purchased items so they do not show up
-                        // in the catalog display
-                        for (let i = 0; i < temp.length; i++) {
-                            temp[i][0] = temp[i][0].split(/{\d: |'|"|}|, \d: /g);
-                        }
+                        if (res.data.status === 'success') {
+                    
+                            let results = res.data.results;
+                            let temp = res.data.purchased;
+                            let purchased = [];                    
 
-                        // Adding purchases to purchased array
-                        for (let i = 0; i < temp.length; i++) {
-                            for (let j = 0; j < temp[0].length; j++) {
-                                for (let k = 0; k < temp[i][j].length; k++) {
-                                    if (temp[i][j][k] !== "" && temp[i][j][k] !== " ") {
-                                        purchased.push(temp[i][j][k]);
+                            // Getting previously purchased items so they do not show up
+                            // in the catalog display
+                            for (let i = 0; i < temp.length; i++) {
+                                temp[i][0] = temp[i][0].split(/{\d: |'|"|}|, \d: /g);
+                            }
+
+                            // Adding purchases to purchased array
+                            for (let i = 0; i < temp.length; i++) {
+                                for (let j = 0; j < temp[0].length; j++) {
+                                    for (let k = 0; k < temp[i][j].length; k++) {
+                                        if (temp[i][j][k] !== "" && temp[i][j][k] !== " ") {
+                                            purchased.push(temp[i][j][k]);
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        // Adding catalog items to catalog_items array if they have not
-                        // already been purchased
-                        for (let item of results) {
-                            let add = true;
-                            for (let i = 0; i < purchased.length; i++) {
-                                if (item.title === purchased[i]) add = false;
+                            // Adding catalog items to catalog_items array if they have not
+                            // already been purchased
+                            for (let item of results) {
+                                let add = true;
+                                for (let i = 0; i < purchased.length; i++) {
+                                    if (item.title === purchased[i]) add = false;
+                                }
+
+                                if (add) this.catalog_items.push(item);
+                                else add = true;
                             }
-                            
-                            if (add) this.catalog_items.push(item);
-                            else add = true;
+                        }
+                        else {
+                            console.log("Failed to get catalog items");
+                            console.log(`Results: ${res.data.results}`);
                         }
                     })
                     .catch((err) => {
                         console.log(err);
+<<<<<<< HEAD
                     });  
+=======
+                        console.log("Error!");
+                    });            
+>>>>>>> 69ab34092da747b7604389159be0261ffe09af71
             },
 
             // Method used for user search functionality
