@@ -160,12 +160,7 @@
                     })
                     .catch((err) => {
                         console.log(err);
-<<<<<<< HEAD
                     });  
-=======
-                        console.log("Error!");
-                    });            
->>>>>>> 69ab34092da747b7604389159be0261ffe09af71
             },
 
             // Method used for user search functionality
