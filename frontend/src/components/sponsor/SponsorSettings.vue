@@ -140,7 +140,7 @@
                 <!-- Row to hold sponsor reports and links -->
                 <div class="row2">
                     <div class="sponsor-reports">
-                        <p><strong>View Point Change Reports: </strong></p>
+                        <p><strong>View Reports: </strong></p>
                         <a href="https://app.powerbi.com/reportEmbed?reportId=f793ef90-40fc-44b6-8a7e-62879d982d19&autoAuth=true&ctid=0c9bf8f6-ccad-4b87-818d-49026938aa97" target="_blank"> Power BI</a> 
                     </div>
                 </div>
@@ -151,7 +151,8 @@
             <div class="driver-container" v-if="show_drivers">
                 <div class="driver-info" v-for="driver in display_drivers()" :key="driver">
                     <p><strong>Full Name:</strong> {{ driver.full_name }}<input type="text" placeholder="New Name" v-model="new_driver['FullName']" v-if="update_driver[driver.full_name]"/></p>
-                    <p><strong>Username:</strong> {{ driver.username }}<input type="text" placeholder="New Username" v-model="new_driver['Username']" v-if="update_driver[driver.full_name]"/></p>
+                    <!-- <p><strong>Username:</strong> {{ driver.username }}<input type="text" placeholder="New Username" v-model="new_driver['Username']" v-if="update_driver[driver.full_name]"/></p> -->
+                    <p><strong>Username:</strong> {{ driver.username }}</p>
                     <p><strong>Email:</strong> {{ driver.email }}<input type="text" placeholder="New Email" v-model="new_driver['Email']" v-if="update_driver[driver.full_name]"/></p>
                     <p><strong>Points Limit:</strong> {{ driver.points_limit }} points<input type="text" placeholder="New Points Limit" v-model="new_driver['PointsLimit']" v-if="update_driver[driver.full_name]"/></p>
                     <p><strong>Expiration Period:</strong> {{ driver.expiration_period }} months<input type="text" placeholder="New Expiration Period" v-model="new_driver['ExpirationPeriod']" v-if="update_driver[driver.full_name]"/></p>
