@@ -637,11 +637,6 @@ def submit_app_decision():
     cursor.execute(query)
     results = cursor.fetchall()
     driver_id=results[0][0]
-    print(driver_id)
-    print(driver)
-    print(reason)
-    print(sponsor_id)
-    print(decision)
     #if decision=='Accepted':
     #    query = f'UPDATE DriverApplications SET APP_STATUS="{decision}", REASON="{reason}", SPONSOR_ID="{sponsor_id}", Active="Yes" WHERE DRIVER_ID="{driver_id}"'
     #    cursor.execute(query)

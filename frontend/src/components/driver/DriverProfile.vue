@@ -259,7 +259,7 @@
                 // Axios API call to python backend to change password
                 axios.post(this.path + '/edit', null, {params: {request: 'password', password: new_password, userid: this.user_id}})
                     .then((res) => {
-                        window.print("Password must contain: at least one lower and upper case letter, at least one number, and at least one special character")
+                        window.alert("Password must contain at least one upper and lower case letter, at least one number, and at least one special character.")
                         
                         // Checking password to make sure it meets all requirements
                         if (minMaxLength.test(new_password) && upper.test(new_password) && lower.test(new_password) && number.test(new_password) && special.test(new_password)) {
