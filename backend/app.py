@@ -109,7 +109,6 @@ def reset_passwd():
             'results': results
         })
     else:
-        # print("nothing")
         return jsonify({
             'status': 'failure',
             'results': results
@@ -150,7 +149,6 @@ def edit():
         if request.args.get('request', '') == 'email':
             email = request.args.get('email', '')
             userid = request.args.get('userid', '')
-            # print("UserID: "+userid+" Email:"+email)
             query = f'UPDATE UserInfo SET Email = "{email}" WHERE UserID = {userid}'
             cursor.execute(query)
             db.commit()
@@ -211,6 +209,26 @@ def get_user_info():
     username = request.args.get('username', '')
     cursor = db.cursor()
     query = f'SELECT * FROM UserInfo WHERE Username = "{username}"'
+    cursor.execute(query)
+    results = cursor.fetchall()
+
+    if len(results) > 0:
+        return jsonify({
+            'status': 'success',
+            'results': results
+        })
+    else:
+        return jsonify({
+            'status': 'failure',
+            'results': results
+        })
+
+@app.route('/get-drivers-admin', methods=['GET'])
+def get_drivers_admin():
+    cursor = db.cursor()
+
+    query = f'SELECT FullName FROM UserInfo WHERE UserType = "Driver"'
+
     cursor.execute(query)
     results = cursor.fetchall()
 
@@ -353,7 +371,7 @@ def apply():
     username = request.args.get('username', '')
     passwd = request.args.get('password', '')
     sponsor = request.args.get('sponsor', '')
-    query = f'SELECT UserID FROM UserInfo WHERE Username="{sponsor[3:-3]}"'
+    query = f'SELECT UserID FROM UserInfo WHERE Username="{sponsor}"'
     cursor.execute(query)
     results = cursor.fetchall()
     sponsor_id=results[0][0]
@@ -368,7 +386,10 @@ def apply():
 
 @app.route('/get-catalog-items', methods=['GET'])
 def get_catalog_items():
-    if EXPIRES < datetime.now():
+    try:
+        if EXPIRES < datetime.now():
+            get_new_token()
+    except:
         get_new_token()
     
     sandbox_url = 'https://api.sandbox.ebay.com/buy/browse/v1/item_summary/search?'
@@ -450,7 +471,7 @@ def new_driver():
     username = request.args.get('username', '')
     passwd = request.args.get('password', '')
     sponsor = request.args.get('sponsor', '')
-    query = f'SELECT UserID FROM UserInfo WHERE Username="{sponsor[3:-3]}"'
+    query = f'SELECT UserID FROM UserInfo WHERE Username="{sponsor}"'
     cursor.execute(query)
     results = cursor.fetchall()
     sponsor_id=results[0][0]
@@ -797,5 +818,4 @@ def deactivateadmin():
     return jsonify({'status': status})
 
 if __name__ == '__main__':
-    get_new_token()
-    app.run(debug=False)
+    app.run(debug=True)

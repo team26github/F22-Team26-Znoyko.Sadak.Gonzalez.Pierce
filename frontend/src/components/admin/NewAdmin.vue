@@ -2,29 +2,36 @@
     <div class="settings-container">
         <NavBar :usertype="user_type" :username="username"></NavBar>
 
+        <!-- Form to fill out for a new sponsor -->
         <form style="max-width:800px;margin:auto">
             <h1>New Admin</h1>
 
+            <!-- First Name Input Container -->
             <div class="input-container">
                 <input class="input-field" type="text" placeholder="First Name" name="first_name" v-model="first_name" required><br><br>
             </div>
 
+            <!-- Last Name Input Container -->
             <div class="input-container">
                 <input class="input-field" type="text" placeholder="Last Name" name="last_name" v-model="last_name" required><br><br>
             </div>
 
+            <!-- Username Input Container -->
             <div class="input-container">
                 <input class="input-field" type="text" placeholder="Username" name="username" v-model="admin_username" required><br><br>
             </div>
 
+            <!-- Email Input Container -->
             <div class="input-container">
                 <input class="input-field" type="text" placeholder="Email" name="email" v-model="email" required><br><br>
             </div>
             
+            <!-- Password Input Container-->
             <div class="input-container">
                 <input class="input-field" type="password" placeholder="Password" name="password" v-model="password" required><br><br>
             </div>
 
+            <!-- Submit button to create a new admin -->
             <button type="button" class="btn" @click="create_admin" >Create</button> 
         </form>
     </div>
@@ -36,8 +43,11 @@
     import NavBar from '../misc/NavBar.vue';
 
     export default {
+
+        // Component name
         name: "new-admin",
 
+        // Component specific variables and data
         data() {
             return {
                 status: null,
@@ -48,7 +58,7 @@
                 password: '',
                 email: '',
                 user_type: "Admin",
-                production_path: "http://18.191.136.200",
+                production_path: "https://www.spacebarcowboys.com",
                 localhost_path: "http://localhost:5000",
                 path: null
             };
@@ -57,16 +67,26 @@
         // Mounted function is used for doing operations right after the component
         // Is mounted and right before the component is shown to the user
         mounted() {
-            this.username = this.$route.params.username;
-            this.path = this.production_path;
 
+            // Preventing users from accessing the application without logging in
+            if (sessionStorage.getItem('loggedIn') !== 'true') this.$router.push({name: 'login'});
+
+            // Getting username from route URL and setting Axios API path to either
+            // localhost or production
+            this.username = this.$route.params.username;
+            this.path = this.localhost_path;
+
+            // Axios API call to python backend to get current user information
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
                 .then((res) => {
                     if (res.data.status === 'success') {
                         this.user_type = res.data.results[0][2];
+
+                        if (res.data.results[0][0].toString() !== sessionStorage.getItem('userID')) this.$router.push({name: 'login'});
                     }
                     else {
-                        console.log('Unsuccessful');
+                        window.alert('Could not find this user, logging out now');
+                        this.$router.push({name: 'login'});
                     }
                 })
                 .catch((error) => {
@@ -74,40 +94,61 @@
                 })
         },
 
+        // Component specific methods
         methods: {
-            create_admin() {         
-                axios.get(this.path + '/new-user', {params: {username: this.admin_username, email: this.email}})
-                    .then((res) => {
-                        if (res.data.status === 'success') {
-                            if (res.data.results.length === 0) {
-                                axios.post(this.path + '/new-admin', null, {params: {email: this.email, first_name: this.first_name, last_name: this.last_name, username: this.admin_username, password: this.password}}) 
-                                    .then((res) => {
-                                        if (res.data.status === "success") {
-                                            console.log("success");
-                                        }
-                                        else {
-                                            window.alert("Cannot create admin.");
-                                        }
-                                    })
-                                    .catch((error) => {
-                                        // esling-disable-next-line
-                                        console.log(error);
-                                    })
+
+            // Method to create a new admin upon submission button click
+            create_admin() {   
+
+                // Checking to see if all fields are filled out before submission
+                if (this.first_name !== '' && this.last_name !== '' && this.admin_username !== '' && this.email !== '' && this.password !== '') {
+                
+                    // Axios API call to python backend to check for duplicate users
+                    axios.get(this.path + '/new-user', {params: {username: this.admin_username, email: this.email}})
+                        .then((res) => {
+                            if (res.data.status === 'success') {
+
+                                // If there are no duplicate users, then create a new admin
+                                if (res.data.results.length === 0) {
+
+                                    // Axios API call to python backend to create a new admin and add them to the database
+                                    axios.post(this.path + '/new-admin', null, {params: {email: this.email, first_name: this.first_name, last_name: this.last_name, username: this.admin_username, password: this.password}}) 
+                                        .then((res) => {
+                                            if (res.data.status === "success") {
+                                                window.alert("Admin successfully created");
+                                                this.first_name = '';
+                                                this.last_name = '';
+                                                this.admin_username = '';
+                                                this.email = '';
+                                                this.password = '';
+                                            }
+                                            else {
+                                                window.alert("Cannot create admin.");
+                                            }
+                                        })
+                                        .catch((error) => {
+                                            // esling-disable-next-line
+                                            console.log(error);
+                                        })
+                                }
+                                else if (res.data.results.length === 1) {
+                                    window.alert(`${res.data.results[0]} is already taken`);
+                                }
+                                else if (res.data.results.length === 2) {
+                                    window.alert(`${res.data.results[0]} and ${res.data.results[1]} are already taken`);
+                                }
                             }
-                            else if (res.data.results.length === 1) {
-                                window.alert(`${res.data.results[0]} is already taken`);
+                            else {
+                                console.log('Failure');
                             }
-                            else if (res.data.results.length === 2) {
-                                window.alert(`${res.data.results[0]} and ${res.data.results[1]} are already taken`);
-                            }
-                        }
-                        else {
-                            console.log('Failure');
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                }
+                else {
+                    window.alert("All fields must be filled out to create a new admin");
+                }
             },
         },
         components: { NavBar }

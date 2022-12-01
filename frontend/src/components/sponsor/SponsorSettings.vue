@@ -197,7 +197,7 @@
                     'DollarPointValue': null
                 },
                 update_driver: {},
-                production_path: "http://18.191.136.200",
+                production_path: "https://www.spacebarcowboys.com",
                 localhost_path: "http://localhost:5000",
                 path: null
             };
@@ -207,10 +207,13 @@
         // Is mounted and right before the component is shown to the user
         mounted() {
 
+            // Preventing users from accessing the application without logging in
+            if (sessionStorage.getItem('loggedIn') !== 'true') this.$router.push({name: 'login'});
+
             // Getting username for user from URL and setting path for axios API calls
             // to either localhost or production
             this.username = this.$route.params.username;
-            this.path = this.production_path;
+            this.path = this.localhost_path;
 
             // Axios API call to python backend to get current user information
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
@@ -222,10 +225,13 @@
                         this.dollar_to_point_value = res.data.results[0][8];
                         this.catalog_filters = res.data.results[0][10].split(',');
 
+                        if (sessionStorage.getItem('userID') !== this.user_id.toString()) this.$router.push({name: 'login'});
+
                         this.get_info();
                     }
                     else {
-                        console.log("Unsuccessful");
+                        window.alert('Could not find this user, logging out now');
+                        this.$router.push({name: 'login'});
                     }
                 });
         },
@@ -557,7 +563,7 @@
         display: flex;
         flex-direction: column;
         width: 30%;
-        height: 80%;
+        height: 50%;
         overflow-y: auto;
         border-style: solid;
         border-color: black;

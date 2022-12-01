@@ -2,18 +2,20 @@
     <form style="max-width:800px;margin:auto">
         <h1>Driver Application</h1>
 
-        <div>Select Sponsor: {{ selected }}</div>
+        <div class="row">
+            <div>Select Sponsor:&nbsp;</div>
 
-        <!-- <select name = "selected" @change="onChange($event)" v-model="selected" required>
-            <option disabled value="">Please select one sponsor you would like to apply to</option>
-            <option v-for="sponsor in sponsors" :key="sponsor">{{sponsor}}</option>
-        </select> -->
+            <!-- <select name = "selected" @change="onChange($event)" v-model="selected" required>
+                <option disabled value="">Please select one sponsor you would like to apply to</option>
+                <option v-for="sponsor in sponsors" :key="sponsor">{{sponsor}}</option>
+            </select> -->
 
-        <!-- Sponsor selection dropdown menu -->
-        <select name = "selected" v-model="selected" required>
-            <option disabled value="">Please select one sponsor you would like to apply to</option>
-            <option v-for="sponsor in sponsors" :key="sponsor">{{sponsor[0]}}</option>
-        </select>
+            <!-- Sponsor selection dropdown menu -->
+            <select name = "selected" v-model="sponsor_selected" required>
+                <option disabled value="">Please select one sponsor you would like to apply to</option>
+                <option v-for="sponsor in sponsors" :key="sponsor">{{sponsor[0]}}</option>
+            </select>
+        </div>
 
         <br><br>
 
@@ -43,7 +45,7 @@
         </div>
 
         <!-- Submission Button -->
-        <button type="submit" class="btn" @click="submit_application" >Apply</button> 
+        <button type="submit" class="btn" @click="submit_application">Apply</button> 
         
         <br><br>
         <!-- Return to Login Route -->
@@ -72,7 +74,7 @@
                 user_type: '',
                 sponsors: [],
                 sponsor_selected: '',
-                production_path: "http://18.191.136.200",
+                production_path: "https://www.spacebarcowboys.com",
                 localhost_path: "http://localhost:5000",
                 path: null
             };
@@ -83,7 +85,8 @@
         mounted() {
 
             // Sets path for axios API calls to either localhost or production
-            this.path = this.production_path;
+            this.path = this.localhost_path;
+            this.fetchSponsors();
         },
 
         // Component specific methods
@@ -99,7 +102,7 @@
             fetchSponsors() {
 
                 // Axios API call to python backend to get available sponsors
-                axios.get(this.path + '/get-sponsors', {params: {user_id: this.user_id}})
+                axios.get(this.path + '/get-sponsors')
                     .then((res) => {
                         if (res.data.status === 'success') {
                             this.sponsors = res.data.results;
@@ -115,34 +118,39 @@
 
             // Method for submitting application
             submit_application() {              
-                
-                // Axios API call to python backend to add application to database
-                axios.post(this.path + '/apply', null, {params: {email: this.email, first_name: this.first_name, last_name: this.last_name, username: this.username, password: this.password, sponsor: this.sponsor_selected}}) 
-                    .then((res) => {
-                        if (res.data.status === "success") {
-                            console.log("success");
-                        }
-                        else {
-                            window.alert("Cannot submit application.");
-                        }
-                    })
-                    .catch((error) => {
-                        // esling-disable-next-line
-                        console.log(error);
-                    })
+                if (this.first_name !== '' && this.last_name !== '' && this.username !== '' && this.password !== '' && this.sponsor_selected !== '') {
+
+                    // Axios API call to python backend to add application to database
+                    axios.post(this.path + '/apply', null, {params: {email: this.email, first_name: this.first_name, last_name: this.last_name, username: this.username, password: this.password, sponsor: this.sponsor_selected}}) 
+                        .then((res) => {
+                            if (res.data.status === "success") {
+                                console.log("success");
+                            }
+                            else {
+                                window.alert("Cannot submit application.");
+                            }
+                        })
+                        .catch((error) => {
+                            // esling-disable-next-line
+                            console.log(error);
+                        })
+                }
+                else {
+                    window.alert("All fields must be filled out to apply");
+                }
             },
-        },
-        
-        // Method for getting available sponsors on creation of the component
-        created:function(){
-            this.fetchSponsors();
-        },
+        }
     }
 
 </script>
 
 <style scoped>
     * {box-sizing: border-box;}
+
+    .row {
+        display: flex;
+        flex-direction: row;
+    }
 
     .input-container {
     display: flex;

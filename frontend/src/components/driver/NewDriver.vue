@@ -4,10 +4,10 @@
         <form style="max-width:800px;margin:auto">
             <h1>New Driver</h1>
 
-            <div>Select Sponsor: {{ selected }}</div>
+            <div>Select Sponsor:</div>
 
             <!-- Sponsor selection dropdown menu -->
-            <select name = "selected" @change="onChange($event)" v-model="selected" required>
+            <select name = "selected" @change="onChange($event)" v-model="sponsor_selected" required>
                 <option disabled value="">Please select one sponsor you would like to apply to</option>
                 <option v-for="sponsor in sponsors" :key="sponsor">{{sponsor[0]}}</option>
             </select>
@@ -40,7 +40,7 @@
             </div>
 
             <!-- Submit button to create a new driver -->
-            <button type="submit" class="btn" @click="create_driver" >Create</button> 
+            <button type="button" class="btn" @click="create_driver" >Create</button> 
         </form>
     </div>
 
@@ -69,7 +69,7 @@
                 user_type: '',
                 sponsors: [],
                 sponsor_selected: '',
-                production_path: "http://18.191.136.200",
+                production_path: "https://www.spacebarcowboys.com",
                 localhost_path: "http://localhost:5000",
                 path: null
             };
@@ -79,20 +79,27 @@
         // Is mounted and right before the component is shown to the user
         mounted() {
 
+            // Preventing users from accessing the application without logging in
+            if (sessionStorage.getItem('loggedIn') !== 'true') this.$router.push({name: 'login'});
+
             // Getting username from route URL and setting Axios API path to either
             // localhost or production
             this.username = this.$route.params.username;
-            this.path = this.production_path;
+            this.path = this.localhost_path;
 
             // Axios API call to python backend to get current user information
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
                 .then((res) => {
                     if (res.data.status === 'success') {
                         this.user_type = res.data.results[0][2];
+
+                        if (res.data.results[0][0].toString() !== sessionStorage.getItem('userID')) this.$router.push({name: 'login'});
+                        
                         this.fetchSponsors();
                     }
                     else {
-                        console.log('Unsuccessful');
+                        window.alert('Could not find this user, logging out now');
+                        this.$router.push({name: 'login'});
                     }
                 })
                 .catch((error) => {
@@ -130,41 +137,56 @@
             // Method to add a new driver to the database
             create_driver() {                 
 
-                // Axios API call to python backend to check for duplicate users
-                axios.get(this.path + '/new-user', {params: {username: this.driver_username, email: this.email}})
-                    .then((res) => {
-                        if (res.data.status === 'success') {
-                            if (res.data.results.length === 0) {
+                // Checking to see if all fields are filled out before submission
+                if (this.first_name !== '' && this.last_name !== '' && this.driver_username !== '' && this.email !== '' && this.password !== '' && this.sponsor_selected !== '') {
 
-                                // Axios API call to python backend to add new driver to database
-                                axios.post(this.path + '/new-driver', null, {params: {email: this.email, first_name: this.first_name, last_name: this.last_name, username: this.driver_username, password: this.password, sponsor: this.sponsor_selected}}) 
-                                    .then((res) => {
-                                        if (res.data.status === "success") {
-                                            console.log("success");
-                                        }
-                                        else {
-                                            window.alert("Cannot create driver.");
-                                        }
-                                    })
-                                    .catch((error) => {
-                                        // esling-disable-next-line
-                                        console.log(error);
-                                    });
+                // Axios API call to python backend to check for duplicate users
+                    axios.get(this.path + '/new-user', {params: {username: this.driver_username, email: this.email}})
+                        .then((res) => {
+                            if (res.data.status === 'success') {
+
+                                // If there are no duplicate users, then create a new driver
+                                if (res.data.results.length === 0) {
+
+                                    // Axios API call to python backend to add new driver to database
+                                    axios.post(this.path + '/new-driver', null, {params: {email: this.email, first_name: this.first_name, last_name: this.last_name, username: this.driver_username, password: this.password, sponsor: this.sponsor_selected}}) 
+                                        .then((res) => {
+                                            if (res.data.status === "success") {
+                                                window.alert("Driver successfully created");
+                                                this.first_name = '';
+                                                this.last_name = '';
+                                                this.driver_username = '';
+                                                this.email = '';
+                                                this.password = '';
+                                                this.sponsor_selected = '';
+                                            }
+                                            else {
+                                                window.alert("Cannot create driver.");
+                                            }
+                                        })
+                                        .catch((error) => {
+                                            // esling-disable-next-line
+                                            console.log(error);
+                                        });
+                                }
+                                else if (res.data.results.length === 1) {
+                                    window.alert(`${res.data.results[0]} is already taken`);
+                                }
+                                else if (res.data.results.length === 2) {
+                                    window.alert(`${res.data.results[0]} and ${res.data.results[1]} are already taken`);
+                                }
                             }
-                            else if (res.data.results.length === 1) {
-                                window.alert(`${res.data.results[0]} is already taken`);
+                            else {
+                                console.log('Failure');
                             }
-                            else if (res.data.results.length === 2) {
-                                window.alert(`${res.data.results[0]} and ${res.data.results[1]} are already taken`);
-                            }
-                        }
-                        else {
-                            console.log('Failure');
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                }
+                else {
+                    window.alert("All fields must be filled out to create a new driver");
+                }
             }
         },
 

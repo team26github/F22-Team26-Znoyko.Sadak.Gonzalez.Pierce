@@ -20,7 +20,7 @@
     </div>
 
     <!-- Container to hold items in the catalog -->
-    <div class="catalog-container" :key="update">
+    <div v-if="(catalog_items.length > 0)" class="catalog-container" :key="update">
 
         <!-- Item(s) in the catalog available for user purchase. If there are more than one catalog item available
             for purchase, then multiple containers will be rendered -->
@@ -31,6 +31,9 @@
             <a :href="item.itemWebUrl" target="_blank">Check it Out!</a>
             <button @click="add_to_cart(item)">Add to Cart</button>
         </div>
+    </div>
+    <div v-else class="catalog-container-empty">
+        <h1>Nothing Available!</h1>
     </div>
 </template>
 
@@ -57,8 +60,8 @@
                 cart: [],
                 cost: 0.0,
                 num_in_cart: 0,
-                catalog_items: null,
-                production_path: "http://18.191.136.200",
+                catalog_items: [],
+                production_path: "https://www.spacebarcowboys.com",
                 localhost_path: "http://localhost:5000",
                 path: null
             };
@@ -67,8 +70,12 @@
         // Mounted function is used for doing operations right after the component
         // Is mounted and right before the component is shown to the user
         mounted() {
+
+            // Preventing users from accessing the application without logging in
+            if (sessionStorage.getItem('loggedIn') !== 'true') this.$router.push({name: 'login'});
+
             this.username = this.$route.params.username;
-            this.path = this.production_path;
+            this.path = this.localhost_path;
 
             // Axios API call to python backend to get user information from the database
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
@@ -78,10 +85,14 @@
                             this.user_type = res.data.results[0][2];
                             this.point_conversion = res.data.results[0][8];
                             this.catalog_filters = res.data.results[0][10].split(',');
+
+                            if (sessionStorage.getItem('userID') !== this.user_id.toString()) this.$router.push({name: 'login'});
+
                             this.get_catalog_items();
                         }
                         else {
-                            console.log('Unsuccessful');
+                            window.alert('Could not find this user, logging out now');
+                            this.$router.push({name: 'login'});
                         }
                     })
                     .catch((error) => {
@@ -118,37 +129,44 @@
                 // Axios API call to python backend to get catalog items from eBay
                 axios.get(this.path + '/get-catalog-items', {params: {keywords: keywords}})
                     .then((res) => {
-                        let results = res.data.results;
-                        let temp = res.data.purchased;
-                        let purchased = [];                    
-                        
-                        // Getting previously purchased items so they do not show up
-                        // in the catalog display
-                        for (let i = 0; i < temp.length; i++) {
-                            temp[i][0] = temp[i][0].split(/{\d: |'|"|}|, \d: /g);
-                        }
+                        if (res.data.status === 'success') {
+                    
+                            let results = res.data.results;
+                            let temp = res.data.purchased;
+                            let purchased = [];                    
 
-                        // Adding purchases to purchased array
-                        for (let i = 0; i < temp.length; i++) {
-                            for (let j = 0; j < temp[0].length; j++) {
-                                for (let k = 0; k < temp[i][j].length; k++) {
-                                    if (temp[i][j][k] !== "" && temp[i][j][k] !== " ") {
-                                        purchased.push(temp[i][j][k]);
+                            // Getting previously purchased items so they do not show up
+                            // in the catalog display
+                            for (let i = 0; i < temp.length; i++) {
+                                temp[i][0] = temp[i][0].split(/{\d: |'|"|}|, \d: /g);
+                            }
+
+                            // Adding purchases to purchased array
+                            for (let i = 0; i < temp.length; i++) {
+                                for (let j = 0; j < temp[0].length; j++) {
+                                    for (let k = 0; k < temp[i][j].length; k++) {
+                                        if (temp[i][j][k] !== "" && temp[i][j][k] !== " ") {
+                                            purchased.push(temp[i][j][k]);
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        // Adding catalog items to catalog_items array if they have not
-                        // already been purchased
-                        for (let item of results) {
-                            let add = true;
-                            for (let i = 0; i < purchased.length; i++) {
-                                if (item.title === purchased[i]) add = false;
+                            // Adding catalog items to catalog_items array if they have not
+                            // already been purchased
+                            for (let item of results) {
+                                let add = true;
+                                for (let i = 0; i < purchased.length; i++) {
+                                    if (item.title === purchased[i]) add = false;
+                                }
+
+                                if (add) this.catalog_items.push(item);
+                                else add = true;
                             }
-                            
-                            if (add) this.catalog_items.push(item);
-                            else add = true;
+                        }
+                        else {
+                            console.log("Failed to get catalog items");
+                            console.log(`Results: ${res.data.results}`);
                         }
                     })
                     .catch((err) => {
@@ -244,6 +262,19 @@
     .catalog-container {
         display: flex;
         flex-wrap: wrap;
+        width: 96.5vw;
+        height: 87vh;
+        border-style: solid;
+        border-color: black;
+        gap: 1rem;
+        padding: 1rem;
+        overflow-y: auto;
+        background-color:palegreen;
+    }
+
+    .catalog-container-empty {
+        display: grid;
+        place-items: center;
         width: 96.5vw;
         height: 87vh;
         border-style: solid;

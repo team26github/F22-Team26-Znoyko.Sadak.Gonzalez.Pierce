@@ -56,7 +56,7 @@
                 username: null,
                 user_id: null,
                 drivers: [],
-                production_path: "http://18.191.136.200",
+                production_path: "https://www.spacebarcowboys.com",
                 localhost_path: "http://localhost:5000",
                 path: null,
                 driver_selected: '',
@@ -130,9 +130,12 @@
         // Is mounted and right before the component is shown to the user
         mounted() {
 
+            // Preventing users from accessing the application without logging in
+            if (sessionStorage.getItem('loggedIn') !== 'true') this.$router.push({name: 'login'});
+
             // Getting username from route URL and setting Axios API path to either
             // localhost or production
-            this.path = this.production_path;
+            this.path = this.localhost_path;
             this.username = this.$route.params.username;
 
             // Axios API call to python backend to get current user information

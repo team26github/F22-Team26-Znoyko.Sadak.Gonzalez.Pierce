@@ -6,11 +6,14 @@
 
             <!-- Section to display catalog items in the user's cart -->
             <div class="row">
-                <div class="catalog-items">
+                <div class="catalog-items" v-if="(items_total > 0)">
                     <ul><strong>Cart Items:</strong></ul>
 
                     <!-- A list item renders for each item in the cart -->
                     <li v-for="item in items" :key="item">&nbsp;{{ item }}</li>
+                </div>
+                <div class="catalog-items" v-else>
+                    <p><strong>Cart Items: </strong>Nothing in your cart!</p>
                 </div>
             </div>
 
@@ -96,7 +99,7 @@
                 items: [],
                 items_total: '',
                 points_total: '',
-                production_path: "http://18.191.136.200",
+                production_path: "https://www.spacebarcowboys.com",
                 localhost_path: "http://localhost:5000",
                 path: null,
                 reason:'Purchase',
@@ -108,6 +111,9 @@
         // Is mounted and right before the component is shown to the user
         mounted() {
 
+            // Preventing users from accessing the application without logging in
+            if (sessionStorage.getItem('loggedIn') !== 'true') this.$router.push({name: 'login'});
+
             // Getting username, cart items, and total cost from url
             this.username = this.$route.params.username;
             this.items = JSON.parse(this.$route.params.cart);
@@ -117,7 +123,7 @@
             this.items_total = this.items.length;
 
             // Setting Axios API path to either local host or production
-            this.path = this.production_path;
+            this.path = this.localhost_path;
 
             // Axios API call to python backend to get user information from the database
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
@@ -128,6 +134,8 @@
                         this.sponsor_id = res.data.results[0][7];
                         this.points_balance = res.data.results[0][11];
 
+                        if (sessionStorage.getItem('userID') !== this.user_id.toString()) this.$router.push({name: 'login'});
+
                         // Determining if the user has enough points to purchase their items
                         if ( (this.points_balance < this.points_total) || (0 == this.points_total) ){
                             this.sufficient_balance = false;
@@ -137,7 +145,8 @@
                         }
                     }
                     else {
-                        console.log('Unsuccessful');
+                        window.alert('Could not find this user, logging out now');
+                        this.$router.push({name: 'login'});
                     }
                 })
                 .catch((error) => {
@@ -153,21 +162,26 @@
             },
 
             submit_purchase() {
+                if (this.items.length > 0) {
 
-                // Axios API call to python backend to add purchase information to the database
-                axios.post(this.path + '/submit-purchase', null, {params: {first_name: this.first_name, last_name: this.last_name, address: this.address, address_city: this.address_city, address_state: this.address_state, address_zip_code: this.address_zip_code, email: this.email, items: JSON.stringify(this.items), items_total: this.items_total, points_total: this.points_total, user_id: this.user_id, sponsor_id: this.sponsor_id }}) 
-                    .then((res) => {
-                        if (res.data.status === "success") {
-                            console.log("success");
-                        }
-                        else {
-                            window.alert("Cannot submit purchase.");
-                        }
-                    })
-                    .catch((error) => {
-                        // esling-disable-next-line
-                        console.log(error);
-                    });
+                    // Axios API call to python backend to add purchase information to the database
+                    axios.post(this.path + '/submit-purchase', null, {params: {first_name: this.first_name, last_name: this.last_name, address: this.address, address_city: this.address_city, address_state: this.address_state, address_zip_code: this.address_zip_code, email: this.email, items: JSON.stringify(this.items), items_total: this.items_total, points_total: this.points_total, user_id: this.user_id, sponsor_id: this.sponsor_id }}) 
+                        .then((res) => {
+                            if (res.data.status === "success") {
+                                console.log("success");
+                            }
+                            else {
+                                window.alert("Cannot submit purchase.");
+                            }
+                        })
+                        .catch((error) => {
+                            // esling-disable-next-line
+                            console.log(error);
+                        });
+                }
+                else {
+                    window.alert("There are no items in your cart!");
+                }
             },
 
             // Method to remove points from the user after a purchase has been completed

@@ -24,6 +24,7 @@
 
         // Component name and props
         name:'NavBar',
+
         props: ['usertype', 'username'],
 
         // Component specific methods
@@ -31,7 +32,7 @@
 
             // Method to logout user upon logout button click
             logout() {
-                localStorage.clear();
+                sessionStorage.clear();
                 this.$router.push({name:'login'})
             },
 

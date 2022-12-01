@@ -42,7 +42,7 @@
             disabled: false,
             time_to_wait: 0,
             time: 0,
-            production_path: "http://18.191.136.200",
+            production_path: "https://www.spacebarcowboys.com",
             localhost_path: "http://localhost:5000",
             path: null
         };
@@ -51,7 +51,7 @@
     // Mounted function is used for doing operations right after the component
     // Is mounted and right before the component is shown to the user
     mounted() {
-      this.path = this.production_path;
+      this.path = this.localhost_path;
     },
 
     // Component specific methods
@@ -112,6 +112,8 @@
                     this.username = res.data.results[0][4];
                     this.password = res.data.results[0][1];
                     this.user_type = res.data.results[0][2];
+                    sessionStorage.setItem('loggedIn', 'true');
+                    sessionStorage.setItem('userID', res.data.results[0][0]);
                     this.$router.push({
                         name: `${this.user_type.toLowerCase()}-dashboard`,
                         params: { username: this.username }

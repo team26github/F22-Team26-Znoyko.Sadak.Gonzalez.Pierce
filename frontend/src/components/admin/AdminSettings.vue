@@ -316,7 +316,7 @@
             update_driver: {},
             update_sponsor: {},
             update_admin: {},
-            production_path: "http://18.191.136.200",
+            production_path: "https://www.spacebarcowboys.com",
             localhost_path: "http://localhost:5000",
             path: null
         };
@@ -325,9 +325,27 @@
     // Mounted function is used for doing operations right after the component
     // Is mounted and right before the component is shown to the user
     mounted() {
+
+        // Preventing users from accessing the application without logging in
+        if (sessionStorage.getItem('loggedIn') !== 'true') this.$router.push({name: 'login'});
+
         this.username = this.$route.params.username;
-        this.path = this.production_path;
-        this.get_info();
+        this.path = this.localhost_path;
+        axios.get(this.path + '/userinfo', {params: {username: this.username}})
+            .then((res) => {
+                if (res.data.status === 'success') { 
+                    if (res.data.results[0][0].toString() !== sessionStorage.getItem('userID')) this.$router.push({name: 'login'});
+
+                    this.get_info();
+                }
+                else {
+                    window.alert('Could not find this user, logging out now');
+                    this.$router.push({name: 'login'});
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     },
 
     // Component specific methods
@@ -401,7 +419,6 @@
         },
 
         display_sponsor_fees() {
-            console.log(this.selected_sponsor_fee);
             if (this.selected_sponsor_fee === 'All') return this.sponsor_fee_info;
             else {
                 for (let s of this.sponsor_fee_info) {
