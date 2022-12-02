@@ -23,7 +23,7 @@
             </div>
 
             <!-- New Password Submission Button -->
-            <button type="submit" class="btn" @click="reset()" >Reset</button> 
+            <button type="button" class="btn" @click="reset()" >Reset</button> 
             <br><br>
 
             <!-- Route User Back to Login Screen -->
@@ -77,17 +77,15 @@
                 axios.get(this.path + '/reset-passwd', { params: { full_name: this.full_name, username: this.username, new_passwd: this.new_passwd } })
                     .then((res) => {
                     if (res.data.status === "failure") {
-                        this.status = "Incorrect Credentials";
-                        window.alert("Password reset unsuccessful");
+                        window.alert("Password reset unsuccessful, incorrect credentials");
                     }
                     else {
-                        this.status = "Success";
+                        window.alert("Password reset successful");
                         this.user_id = res.data.results[0][0];
                         this.username = res.data.results[0][4];
                         this.user_type = res.data.results[0][2];
                         this.$router.push({
-                            name: `${this.user_type.toLowerCase()}-dashboard`,
-                            params: { username: this.username }
+                            name: 'login',
                         });
                     }
                     })
