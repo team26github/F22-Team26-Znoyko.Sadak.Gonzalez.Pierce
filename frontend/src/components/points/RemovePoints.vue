@@ -97,7 +97,7 @@
             // Method to update database with new points value for selected driver
             submit_application() {        
 
-                if (this.num_points !== '' && this.reason !== '' && this.driver_selected !== '') {
+                if (this.num_points.trim() !== '' && this.reason.trim() !== '' && this.driver_selected.trim() !== '') {
                 // Axios API call to python backend to update database with new points
                 // value for selected driver
                     axios.post(this.path + '/remove_points', null, {params: {num_points: this.num_points, reason: this.reason, driver: this.driver_selected, sponsor: this.user_id}}) 
@@ -115,7 +115,7 @@
                         })
                     }
                     else {
-                        window.alert("Please fill out all fields");
+                        window.alert("Please fill out all fields to remove points from a driver");
                     }
             },
         },

@@ -96,6 +96,13 @@
 
             // Method to update database with new points value for selected driver
             submit_application() {      
+
+                if ((this.num_points.trim() === '' || this.num_points === null) ||
+                    (this.reason.trim() === '' || this.reason === null) ||
+                    (this.driver_selected.trim() === '' || this.driver_selected === null)) {
+                        window.alert("Please fill out all fields to add points to a driver");
+                        return;
+                    }
                 
                 // Axios API call to python backend to update database with new points
                 // value for selected driver
