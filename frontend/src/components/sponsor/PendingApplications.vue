@@ -17,9 +17,9 @@
             <div>Select Decision:</div>
             <select name = "selected"  @change="eventChange($event)" required>
                 <option disabled value="">Please select a decision:</option>
-                <option value="Accepted">Accepted</option>
-                <option value="Rejected">Rejected</option>
                 <option value="Pending">Pending</option>
+                <option value="Accepted">Accepted</option>
+                <option value="Rejected">Rejected</option>    
             </select>
 
             <br><br>
@@ -60,7 +60,7 @@
                 localhost_path: "http://localhost:5000",
                 path: null,
                 driver_selected: '',
-                decision: '',
+                decision: 'Accepted',
                 reason: ''
             };
         },

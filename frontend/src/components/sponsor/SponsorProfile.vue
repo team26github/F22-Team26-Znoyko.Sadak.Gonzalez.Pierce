@@ -14,7 +14,7 @@
             <div class="username-container">
                 <div class="username">
                     <p><strong>Username: </strong>{{ username }}</p>
-                    <button @click="edit_username"><span>Edit Username</span></button>
+                    <!-- <button @click="edit_username"><span>Edit Username</span></button> -->
                 </div>
             </div>
         </div>
