@@ -7,7 +7,7 @@
 
             <!-- Container for displaying driver User ID -->
             <div class="user-id-container">
-                <p><strong>UserID: </strong>{{ user_id }}</p>
+                <p class="user-id"><strong>UserID: </strong>{{ user_id }}</p>
             </div>
 
             <!-- Container for displaying driver Username -->
@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <!-- Row for holding driver Password and update/show password buttons -->
+        <!-- Row for holding driver Password, past purchases, view button, and update/show password buttons -->
         <div class="row">
 
             <!-- Container for displaying driver password -->
@@ -30,6 +30,20 @@
                     <button class="show-password" @click="show_password"><span>{{ button_text }}</span></button>
                 </div>
             </div>
+
+            <!-- Container for holding driver past purchases -->
+            <div class="purchases-container">
+                <p><strong>View Past Purchases</strong></p>&nbsp;
+                <label class="purchases">Choose a Purchase:&nbsp;</label>
+
+                <!-- Dropdown menu for showing driver past purchases -->
+                <select class="dropdown-menu" @change="get_purchase($event)">
+                    <option value="All" selected>All</option>
+                    <option v-for="purchase in purchase_info" :key="purchase">{{ display_purchase_items(purchase.items) }}</option>
+                </select>
+
+                <button @click="show_purchases = !show_purchases" class="btn"><span>{{ (show_purchases ? "Hide" : "View") }}</span></button>
+            </div> 
         </div>
 
         <!-- Row for holding driver Email, driver Usertype (Driver), and update button -->
@@ -45,37 +59,22 @@
 
             <!-- Container for displaying driver Usertype (Driver) -->
             <div class="user-type-container">
-                <p><strong>UserType: </strong>{{ user_type }}</p>
+                <p class="user-type"><strong>UserType: </strong>{{ user_type }}</p>
             </div>
-        </div>
-
-        <!-- Row for holding driver past purchases -->
-        <div class="row">
-
-            <!-- Container for displaying driver past purchase names -->
-            <div class="purchases-container">
-                <p><strong>View Past Purchases</strong></p>&nbsp;
-                <label class="purchases">Choose a Purchase: </label>
-
-                <!-- Dropdown menu for showing driver past purchases -->
-                <select class="dropdown-menu" @change="get_purchase($event)">
-                    <option value="All" selected>All</option>
-                    <option v-for="purchase in purchase_info" :key="purchase">{{purchase.items}}</option>
-                </select>
-
-                <button @click="show_purchases = !show_purchases" class="btn"><span>{{ (show_purchases ? "Hide" : "View") }}</span></button>
-            </div> 
         </div>
 
         <!-- Row for holding driver past purchase information -->
         <div class="info-row">
 
             <!-- Container for displaying driver past purchase information if "view" button is clicked -->
-            <div class="purchases" v-if="show_purchases">
-                <div class="purchases" v-for="purchase in display_purchases()" :key="purchase">
+            <div class="past-purchases-info-container" v-if="show_purchases">
+                <div class="past-purchases-info" v-for="purchase in display_purchases()" :key="purchase">
                     <p><strong>Order Email:</strong> {{ purchase.email }}</p>
                     <br>
-                    <p><strong>Items:</strong> {{ purchase.items }}</p>
+                    <ul>
+                        <strong>Items:</strong>
+                        <li v-for="item in purchase.items" :key="item">{{ item }}</li>
+                    </ul>
                     <br>
                     <p><strong>Points Cost:</strong> {{ purchase.point_total }}</p>
                     <br>
@@ -128,7 +127,7 @@
             // Getting username for user from URL and setting path for axios API calls
             // to either localhost or production
             this.username = this.$route.params.username;
-            this.path = this.production_path;
+            this.path = this.localhost_path;
 
             // Axios API call to python backend to get current user information
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
@@ -179,12 +178,27 @@
             // Method to display specific past purchase if one is selected or all past purchases
             // if a specific past purchase is not selected
             display_purchases() {
+
+                console.log(this.purchase_info);
                 if (this.selected_purchase === 'All') return this.purchase_info;
                 else {
                     for (let p of this.purchase_info) {
-                        if (p.items === this.selected_purchase) return [p];
+                        let item = this.display_purchase_items(p.items);
+                        if (item === this.selected_purchase) return [p];
                     }
                 }
+            },
+
+            display_purchase_items(items) {
+                let string_items = '';
+                
+                for (let i = 0; i < items.length - 1; i++) {
+                    string_items += items[i] + ', ';
+                }
+
+                string_items += items[items.length - 1];
+
+                return string_items;
             },
 
             // Method to get past purchase information
@@ -197,13 +211,28 @@
                         if (res.data.status === 'success') {
                             for (const info of res.data.results) {
                                 let purchase = {};
+                                let items = [];
 
                                 purchase['first_name'] = info[1];
                                 purchase['last_name'] = info[2];
                                 purchase['email'] = info[7];
                                 purchase['items_total'] = info[8];
                                 purchase['point_total'] = info[9];
-                                purchase['items'] = info[10];
+                                purchase['items'] = [];
+
+                                items = info[10].split(/{\d: |'|"|}|,\s\d:\s/);
+
+                                for (let i = 0; i < items.length; i++) {
+                                    if (items[i].trim() !== "" && items[i].trim() !== " " && 
+                                        items[i].trim() !== "," && items[i].trim() !== "[" && 
+                                        items[i].trim() !== "]" && items[i].trim() !== "{" && 
+                                        items[i].trim() !== "}") {
+                                            purchase['items'].push(items[i]);
+                                        }
+                                }
+
+                                
+                                
                                 this.purchase_info.push(purchase);
                             }
                         }
@@ -356,7 +385,7 @@
         overflow-y: auto;
     }
 
-    .password, .username, .email {
+    .password, .username, .email, .user-id, .user-type {
         width: 100%;
         display: flex;
         flex-direction: row;
@@ -381,7 +410,7 @@
         gap: 2rem;
     }
 
-    .user-id-container, .username-container, .password-container, .email-container, .user-type-container{
+    .user-id-container, .username-container, .password-container, .email-container, .user-type-container, .purchases-container {
         display: flex;
         width: 49%;
         border-style: solid;
@@ -431,12 +460,6 @@
         width: 100%;
     }
 
-    .purchases-container {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-
     .password-container .password .show-password {
         margin-left: 0;
     }
@@ -445,10 +468,6 @@
         display: inline-block;
         width: auto;
         margin-left: 5px;
-    }
-
-    .points-container {
-        margin-left: 0;
     }
 
     .dropdown-menu>li>a {
@@ -460,4 +479,38 @@
         max-width: 200px;
     }
 
+    .past-purchases-info-container {
+        display: flex;
+        flex-direction: column;
+        width: 30%;
+        height: 80%;
+        overflow-y: auto;
+        border-style: solid;
+        border-color: black;
+        align-items: center;
+        margin-top: 5%;
+    }
+
+    .past-purchases-info {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+        align-items: left;
+        border-style: solid none none none;
+        border-color: black;
+    }
+
+    .past-purchases-info p, .past-purchases-info ul {
+        margin-left: 2%;
+        width: auto;
+    }
+
+    .past-purchases-info ul {
+        padding: 0;
+    }
+
+    .past-purchases-info ul li {
+        margin-left: 5%;
+    }
 </style>

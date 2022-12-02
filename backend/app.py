@@ -38,7 +38,7 @@ def login():
 
     if request.method == 'GET':
         cursor = db.cursor()
-        query = f'SELECT * FROM UserInfo where (Username = "{username}" AND Passwd = "{password}");'
+        query = f'SELECT * FROM UserInfo where (Username = "{username}" AND Passwd = "{password}" AND Active = "Yes");'
         cursor.execute(query)
         results = cursor.fetchall()
 
