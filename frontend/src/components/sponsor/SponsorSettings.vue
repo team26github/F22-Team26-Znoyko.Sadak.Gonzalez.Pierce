@@ -224,7 +224,7 @@
                         this.expiration_period = res.data.results[0][6];
                         this.user_id = res.data.results[0][0];
                         this.dollar_to_point_value = res.data.results[0][8];
-                        this.catalog_filters = res.data.results[0][10].split(',');
+                        this.catalog_filters = res.data.results[0][10].split(/[,\s]\s*/);
 
                         if (sessionStorage.getItem('userID') !== this.user_id.toString()) this.$router.push({name: 'login'});
 
@@ -246,15 +246,21 @@
                 // Getting new max points from sponsor
                 let new_max_points = window.prompt("Enter maximum value of points");
 
+                if (new_max_points === null) return;
+                else if (new_max_points.trim() === '') {
+                    window.alert("Please enter a valid number for max points");
+                    return;
+                }
+
                 // Axios API call to python backend to update max points for a driver in the database
                 axios.post(this.path + '/edit', null, {params: {request: 'max_points', max_points: new_max_points, userid: this.user_id}})
                     .then((res) => {
                         if (res.data.status === "success") {
-                            this.max_points = new_max_points;
-                            console.log("success");
+                                this.max_points = new_max_points;
+                                window.alert("Max point change successful");
                             }
                         else {
-                            window.alert("Maximum points change unsuccessful");
+                                window.alert("Maximum points change unsuccessful");
                             }
                         })
                     .catch((error) => {
@@ -276,6 +282,12 @@
 
                     // Getting new expiration period from sponsor
                     let new_expiration_period = window.prompt("Enter new expiration period");
+
+                    if (new_expiration_period === null) return;
+                    else if (new_expiration_period.trim() === '') {
+                        window.alert("Please enter a valid number for new expiration period");
+                        return;
+                    }
                     
                     // Axios API call to python backend to change point expiration period in the database
                     axios.post(this.path + '/edit', null, {params: {request: 'expiration_period', expiration_period: new_expiration_period, userid: this.user_id}})
@@ -301,7 +313,8 @@
                 let filters = window.prompt(`Current filters for drivers are: ${this.catalog_filters}`);
 
                 // If the filters prompt has not been filled out, then they will not change
-                if (filters === null || filters === '') window.alert('You must have at least one active filter');
+                if (filters === null) return;
+                else if (filters.trim() === '') window.alert('You must have at least one active filter');
                 else {
                     
                     // Axios API call to python backend to update catalog filters for this sponsor
@@ -324,6 +337,12 @@
 
                 // Getting new point conversion rate from sponsor
                 let conversion = window.prompt('Enter new point conversion (Ex: 1.5 means $1 = 1.5 points)');
+
+                if (conversion === null) return;
+                else if (conversion.trim() === '') {
+                    window.alert("Please enter a valid number for new conversion");
+                    return;
+                }
 
                 // Axios API call to python backend to update point conversion rate for drivers associated with this sponsor
                 axios.post(this.path + '/conversion', null, {params: {point_conversion: conversion, sponsorID: this.user_id}})
