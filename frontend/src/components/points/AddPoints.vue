@@ -108,7 +108,7 @@
                 axios.post(this.path + '/add_points', null, {params: {num_points: this.num_points, reason: this.reason, driver: this.driver_selected, sponsor: this.user_id}}) 
                     .then((res) => {
                         if (res.data.status === "success") {
-                            window.alert(`Successfully added ${num_points} to ${this.driver_selected}`);
+                            window.alert(`Successfully added ${this.num_points} to ${this.driver_selected}`);
                         }
                         else {
                             window.alert("Cannot add points.");

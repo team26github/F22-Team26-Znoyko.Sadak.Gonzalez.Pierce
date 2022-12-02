@@ -5,11 +5,6 @@
         <div class="row">
             <div>Select Sponsor:&nbsp;</div>
 
-            <!-- <select name = "selected" @change="onChange($event)" v-model="selected" required>
-                <option disabled value="">Please select one sponsor you would like to apply to</option>
-                <option v-for="sponsor in sponsors" :key="sponsor">{{sponsor}}</option>
-            </select> -->
-
             <!-- Sponsor selection dropdown menu -->
             <select name = "selected" v-model="sponsor_selected" required>
                 <option disabled value="">Please select one sponsor you would like to apply to</option>
@@ -92,12 +87,6 @@
         // Component specific methods
         methods: {
 
-            // Sets selected sponsor from dropdown menu
-            onChange(e)
-            {
-                this.sponsor_selected=e.target.value
-            },
-
             // Gets available sponsors for driver applications
             fetchSponsors() {
 
@@ -117,7 +106,7 @@
             },
 
             // Method for submitting application
-            submit_application() {              
+            submit_application() {             
                 if (this.first_name !== '' && this.last_name !== '' && this.username !== '' && this.password !== '') {
 
                     if (this.sponsor_selected.trim() === '') {
@@ -155,7 +144,9 @@
 </script>
 
 <style scoped>
-    * {box-sizing: border-box;}
+    * {
+        box-sizing: border-box;
+    }
 
     .row {
         display: flex;
@@ -163,43 +154,34 @@
     }
 
     .input-container {
-    display: flex;
-    width: 100%;
-    margin-bottom: 15px;
-    }
-
-    /* Style the form icons */
-    .icon {
-    padding: 10px;
-    background: #8c72e0;
-    color: white;
-    min-width: 50px;
-    text-align: center;
+        display: flex;
+        width: 100%;
+        margin-bottom: 15px;
     }
 
     /* Style the input fields */
     .input-field {
-    width: 100%;
-    padding: 10px;
-    outline: none;
+        width: 100%;
+        padding: 10px;
+        outline: none;
     }
 
     .input-field:focus {
-    border: 2px solid #8c72e0;
+        border: 2px solid #8c72e0;
     }
 
     /* Set a style for the submit button */
     .btn {
-    background-color: #8c72e0;
-    color: white;
-    padding: 15px 20px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    opacity: 0.9;
+        background-color: #8c72e0;
+        color: white;
+        padding: 15px 20px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        opacity: 0.9;
     }
 
     .btn:hover {
-    opacity: 1;
+        opacity: 1;
     }
 </style>

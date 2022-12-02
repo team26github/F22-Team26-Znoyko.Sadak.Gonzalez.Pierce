@@ -83,13 +83,6 @@
         overflow-y: auto;
     }
 
-    .password, .username, .email {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-
     .row {
         width: 100%;
         height: 45px;
@@ -97,15 +90,6 @@
         flex-direction: row;
         justify-content: center;
         gap: 1rem;
-    }
-
-    .user-id-container, .username-container, .password-container, .email-container, .user-type-container {
-        display: flex;
-        width: 49%;
-        border-style: solid;
-        border-color: black;
-        justify-content: center;
-        align-items: center;
     }
 
     button {

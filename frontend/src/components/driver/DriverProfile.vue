@@ -14,7 +14,6 @@
             <div class="username-container">
                 <div class="username">
                     <p><strong>Username: </strong>{{ username }}</p>
-                    <!-- <button @click="edit_username"><span>Edit Username</span></button> -->
                 </div>
             </div>
         </div>
@@ -242,36 +241,6 @@
                     })
             },
 
-            // edit_username() {
-            //     let new_username = window.prompt("Enter new username");
-            //     axios.get(this.path + '/edit', {params: {request: 'username', username: new_username}})
-            //         .then((res) => {
-            //             if (res.data.status === 'success') {       
-            //                 axios.post(this.path + '/edit', null, {params: {request: 'username', username: new_username, userid: this.user_id}})
-            //                     .then((res) => {
-            //                         if (res.data.status === "success") {
-            //                             this.username = new_username;
-            //                             console.log("success");
-            //                         }
-            //                         else {
-            //                             window.alert("Username change unsuccessful");
-            //                         }
-            //                     })
-            //                     .catch((error) => {
-            //                         // esling-disable-next-line
-            //                         console.log(error);
-            //                     })
-            //             }
-            //             else {
-            //                 window.alert("That username is unavailable.");
-            //             }
-            //         })
-            //         .catch((error) => {
-            //             // esling-disable-next-line
-            //             console.log(error);
-            //         })
-            // },
-
             // Method to change driver password
             edit_password() {
 
@@ -471,8 +440,8 @@
     }
 
     .dropdown-menu>li>a {
-    word-wrap: break-word;
-    white-space: normal;
+        word-wrap: break-word;
+        white-space: normal;
     }
 
     .dropdown-menu{
