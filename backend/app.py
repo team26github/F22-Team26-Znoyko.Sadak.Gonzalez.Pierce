@@ -636,15 +636,18 @@ def submit_app_decision():
     query = f'SELECT DRIVER_ID FROM DriverApplications WHERE FIRST_NAME="{str(driver).split()[0]}" AND LAST_NAME="{str(driver).split()[1]}"'
     cursor.execute(query)
     results = cursor.fetchall()
-    driver_id=results[0][0]
-    #if decision=='Accepted':
-    #    query = f'UPDATE DriverApplications SET APP_STATUS="{decision}", REASON="{reason}", SPONSOR_ID="{sponsor_id}", Active="Yes" WHERE DRIVER_ID="{driver_id}"'
-    #    cursor.execute(query)
-    #else :
-    #    query = f'UPDATE DriverApplications SET APP_STATUS="{decision}", REASON="{reason}", SPONSOR_ID="{sponsor_id}", Active="No" WHERE DRIVER_ID="{driver_id}"'
-    #    cursor.execute(query)
+    driver_id = int(results[0][0])
 
-    query = f'INSERT INTO DriverAppLog (DriverAppID, Date, Changer, StatusChange, Reason) VALUES("{driver_id}","{datetime.now()}","{sponsor_id}", "{decision}", "{reason}")'
+    if decision=='Accepted':
+        query = f'UPDATE DriverApplications SET APP_STATUS="{decision}", REASON="{reason}", SPONSOR_ID={sponsor_id}, Active="Yes" WHERE DRIVER_ID={driver_id}'
+        cursor.execute(query)
+    else :
+        query = f'UPDATE DriverApplications SET APP_STATUS="{decision}", REASON="{reason}", SPONSOR_ID={sponsor_id}, Active="No" WHERE DRIVER_ID={driver_id}'
+        cursor.execute(query)
+    
+    db.commit()
+
+    query = f'INSERT INTO DriverAppLog (DriverAppID, Date, Changer, StatusChange, Reason) VALUES({driver_id},"{datetime.now()}","{sponsor_id}", "{decision}", "{reason}")'
     cursor.execute(query)
 
     db.commit()

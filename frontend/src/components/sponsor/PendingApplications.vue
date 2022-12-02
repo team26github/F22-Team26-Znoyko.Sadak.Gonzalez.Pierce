@@ -108,15 +108,22 @@
             // Method to submit decision to databse
             submit_application() {                 
 
+                if ((this.driver_selected === '' || this.driver_selected === null) || 
+                    (this.reason === '' || this.reason === null) || 
+                    (this.decision === '' || this.decision === null)) {
+                        window.alert("Please fill out all fields and select options from all dropdown menus to accept or reject a driver");
+                        return;
+                    }
+
                 // Axios API call to python backend to add decision for a pending driver application
                 // to the database
                 axios.post(this.path + '/pending_applications', null, {params: {driver: this.driver_selected, reason: this.reason, sponsor: this.user_id, decision: this.decision}}) 
                     .then((res) => {
                         if (res.data.status === "success") {
-                            console.log("success");
+                            window.alert(`${this.driver_selected} ${this.decision.toLowerCase()} successfully`);
                         }
                         else {
-                            window.alert("Cannot add points.");
+                            window.alert("Cannot complete this action at this time");
                         }
                     })
                     .catch((error) => {
