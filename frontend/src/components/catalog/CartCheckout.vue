@@ -195,25 +195,6 @@
                 }
             },
 
-            // Method to remove points from the user after a purchase has been completed
-            remove_points_purchase() {
-
-                // Axios API call to python backend to update user point information in the database
-                axios.post(this.path + 'remove_points_purchase', null, {params: {points_total: this.points_total, reason: this.reason, email: this.email}}) 
-                    .then((res) => {
-                        if (res.data.status === "success") {
-                            console.log("success");
-                        }
-                        else {
-                            window.alert("Cannot remove points and complete purchase.");
-                        }
-                    })
-                    .catch((error) => {
-                        // esling-disable-next-line
-                        console.log(error);
-                    })
-            },
-
             // Method to get a user's point balance
             get_points_balance(){
 

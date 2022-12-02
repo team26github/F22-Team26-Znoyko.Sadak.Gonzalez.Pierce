@@ -14,7 +14,7 @@
         <!-- Button for Removing Points from a Driver -->
         <div class="row">
             <div class="remove-points-button">
-                    <button @click="go_to_remove_points_admin"><span>Deduct Points from Driver</span></button>
+                <button @click="go_to_remove_points_admin"><span>Deduct Points from Driver</span></button>
             </div>
         </div>
 
@@ -123,13 +123,6 @@ import NavBar from '../misc/NavBar.vue';
         overflow-y: auto;
     }
 
-    .password, .username, .email {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-
     .row {
         width: 100%;
         height: 45px;
@@ -137,15 +130,6 @@ import NavBar from '../misc/NavBar.vue';
         flex-direction: row;
         justify-content: center;
         gap: 1rem;
-    }
-
-    .user-id-container, .username-container, .password-container, .email-container, .user-type-container {
-        display: flex;
-        width: 49%;
-        border-style: solid;
-        border-color: black;
-        justify-content: center;
-        align-items: center;
     }
 
     button {
@@ -187,10 +171,6 @@ import NavBar from '../misc/NavBar.vue';
 
     button:hover::after {
         width: 100%;
-    }
-
-    .password-container .password .show-password {
-        margin-left: 0;
     }
 
     p {

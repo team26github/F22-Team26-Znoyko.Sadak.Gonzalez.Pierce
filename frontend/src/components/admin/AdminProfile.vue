@@ -128,48 +128,6 @@
                 }
             },
 
-            // Method to change admin username
-            // edit_username() {
-
-            //     // Getting new username from user
-            //     let new_username = window.prompt("Enter new username");
-
-            //     if (new_username === '' || new_username === null) {
-            //         window.alert("New username cannot be blank");
-            //         return;
-            //     }
-
-            //     // Axios API call to python backend to check for duplicate username
-            //     axios.get(this.path + '/edit', {params: {request: 'username', username: new_username}})
-            //         .then((res) => {
-            //             if (res.data.status === 'success') {      
-                            
-            //                 // Axios API call to python backend to update username
-            //                 axios.post(this.path + '/edit', null, {params: {request: 'username', username: new_username, userid: this.user_id}})
-            //                     .then((res) => {
-            //                         if (res.data.status === "success") {
-            //                             this.username = new_username;
-            //                             console.log("success");
-            //                         }
-            //                         else {
-            //                             window.alert("Username change unsuccessful");
-            //                         }
-            //                     })
-            //                     .catch((error) => {
-            //                         // esling-disable-next-line
-            //                         console.log(error);
-            //                     })
-            //             }
-            //             else {
-            //                 window.alert("That username is unavailable.");
-            //             }
-            //         })
-            //         .catch((error) => {
-            //             // esling-disable-next-line
-            //             console.log(error);
-            //         })
-            // },
-
             // Method to change admin password
             edit_password() {
 

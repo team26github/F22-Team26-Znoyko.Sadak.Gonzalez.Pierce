@@ -4,7 +4,6 @@
         <!-- Form to fill out for adding points to a driver as a sponsor -->
         <form style="max-width:800px;margin:auto">
             <h1>Add Points to Drivers</h1>
-
             <div>Select Driver:</div>
 
             <!-- Dropdown menu to select a driver to add points to -->
@@ -109,7 +108,7 @@
                 axios.post(this.path + '/add_points', null, {params: {num_points: this.num_points, reason: this.reason, driver: this.driver_selected, sponsor: this.user_id}}) 
                     .then((res) => {
                         if (res.data.status === "success") {
-                            console.log("success");
+                            window.alert(`Successfully added ${num_points} to ${this.driver_selected}`);
                         }
                         else {
                             window.alert("Cannot add points.");
@@ -157,7 +156,9 @@
 </script>
 
 <style scoped>
-    * {box-sizing: border-box;}
+    * {
+        box-sizing: border-box;
+    }
 
     .profile-container {
         display: flex;
@@ -172,42 +173,33 @@
     }
 
     .input-container {
-    display: flex;
-    width: 100%;
-    margin-bottom: 15px;
-    }
-
-    /* Style the form icons */
-    .icon {
-    padding: 10px;
-    background: #8c72e0;
-    color: white;
-    min-width: 50px;
-    text-align: center;
+        display: flex;
+        width: 100%;
+        margin-bottom: 15px;
     }
 
     /* Style the input fields */
     .input-field {
-    width: 100%;
-    padding: 10px;
-    outline: none;
+        width: 100%;
+        padding: 10px;
+        outline: none;
     }
 
     .input-field:focus {
-    border: 2px solid #8c72e0;
+        border: 2px solid #8c72e0;
     }
 
     .btn {
-    background-color: #8c72e0;
-    color: white;
-    padding: 15px 20px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    opacity: 0.9;
+        background-color: #8c72e0;
+        color: white;
+        padding: 15px 20px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        opacity: 0.9;
     }
 
     .btn:hover {
-    opacity: 1;
+        opacity: 1;
     }
 </style>
