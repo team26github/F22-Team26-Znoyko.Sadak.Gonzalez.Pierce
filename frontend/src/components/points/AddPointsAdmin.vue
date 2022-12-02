@@ -10,7 +10,7 @@
             <select name = "selected" @change="onChange($event)" required>
                 <option disabled value="">Please select a driver:</option>
                 <option value="None">None</option>
-                <option v-for="driver in drivers" :key="driver">{{driver}}</option>
+                <option v-for="driver in drivers" :key="driver">{{ driver }}</option>
             </select>
 
             <br><br>

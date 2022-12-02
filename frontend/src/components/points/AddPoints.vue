@@ -10,7 +10,7 @@
             <select name = "selected" @change="onChange($event)" required>
                 <option disabled value="">Please select a driver:</option>
                 <option value="None">None</option>
-                <option v-for="driver in drivers" :key="driver">{{driver}}</option>
+                <option v-for="driver in drivers" :key="driver">{{ driver }}</option>
             </select>
 
             <br><br>
@@ -65,7 +65,7 @@
             // Method to get selected driver from dropdown menu
             onChange(e)
             {
-                this.driver_selected=e.target.value
+                this.driver_selected=e.target.value;
             },
 
             // Method to route user back to sponsor dashboard
@@ -73,7 +73,7 @@
                 this.$router.push({
                     name: 'sponsor-dashboard',
                     params: { username: this.username }
-                })
+                });
             },
 
             // Method to get all available drivers from database

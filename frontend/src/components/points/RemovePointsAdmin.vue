@@ -4,14 +4,13 @@
         <!-- Form to fill out for removing points from a driver as an admin -->
         <form style="max-width:800px;margin:auto">
             <h1>Remove Points from Drivers</h1>
-
             <div>Select Driver:</div>
 
             <!-- Dropdown menu to select driver to remove points from -->
             <select name = "selected" @change="onChange($event)" required>
                 <option disabled value="">Please select a driver:</option>
                 <option value="None">None</option>
-                <option v-for="driver in drivers" :key="driver">{{driver}}</option>
+                <option v-for="driver in drivers" :key="driver">{{ driver }}</option>
             </select>
 
             <br><br>
@@ -66,7 +65,7 @@
             // Method to get selected driver from dropdown menu
             onChange(e)
             {
-                this.driver_selected=e.target.value
+                this.driver_selected=e.target.value;
             },
 
             // Method to route user back to admin dashboard
@@ -74,7 +73,7 @@
                 this.$router.push({
                     name: 'admin-dashboard',
                     params: { username: this.username }
-                })
+                });
             },
 
             // Method to get all available drivers from database
@@ -91,7 +90,7 @@
                     })
                     .catch((error) => {
                         console.log(error);
-                    })
+                    });
             },
 
             // Method to update database with new points value for selected driver
@@ -109,10 +108,10 @@
                 axios.post(this.path + '/remove_points', null, {params: {num_points: this.num_points, reason: this.reason, driver: this.driver_selected, sponsor: this.user_id}}) 
                     .then((res) => {
                         if (res.data.status === "success") {
-                            window.alert(`Successfully added ${this.num_points} to ${this.driver_selected}`)
+                            window.alert(`Successfully removed ${Math.abs(this.num_points)} to ${this.driver_selected}`)
                         }
                         else {
-                            window.alert("Cannot remove points.");
+                            window.alert("Cannot remove points from driver");
                         }
                     })
                     .catch((error) => {
@@ -177,37 +176,28 @@
     margin-bottom: 15px;
     }
 
-    /* Style the form icons */
-    .icon {
-    padding: 10px;
-    background: #8c72e0;
-    color: white;
-    min-width: 50px;
-    text-align: center;
-    }
-
     /* Style the input fields */
     .input-field {
-    width: 100%;
-    padding: 10px;
-    outline: none;
+        width: 100%;
+        padding: 10px;
+        outline: none;
     }
 
     .input-field:focus {
-    border: 2px solid #8c72e0;
+        border: 2px solid #8c72e0;
     }
 
     .btn {
-    background-color: #8c72e0;
-    color: white;
-    padding: 15px 20px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    opacity: 0.9;
+        background-color: #8c72e0;
+        color: white;
+        padding: 15px 20px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        opacity: 0.9;
     }
 
     .btn:hover {
-    opacity: 1;
+        opacity: 1;
     }
 </style>
