@@ -26,8 +26,8 @@
             for purchase, then multiple containers will be rendered -->
         <div v-for="item in catalog_items" :key="item" class="catalog-item-container">
             <img class="item-img" v-if="'image' in item" :src="item.image.imageUrl"/>
-            <p><strong>Item:</strong> {{item.title}}</p>
-            <p><strong>Price:</strong> {{(item.price.value * this.point_conversion).toFixed(2)}} points</p>
+            <p><strong>Item:</strong> {{ item.title }}</p>
+            <p><strong>Price:</strong> {{ (item.price.value * this.point_conversion).toFixed(2) }} points</p>
             <a :href="item.itemWebUrl" target="_blank">Check it Out!</a>
             <button @click="add_to_cart(item)">Add to Cart</button>
         </div>

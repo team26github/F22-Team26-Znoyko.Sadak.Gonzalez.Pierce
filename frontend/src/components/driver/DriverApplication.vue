@@ -8,7 +8,7 @@
             <!-- Sponsor selection dropdown menu -->
             <select name = "selected" v-model="sponsor_selected" required>
                 <option disabled value="">Please select one sponsor you would like to apply to</option>
-                <option v-for="sponsor in sponsors" :key="sponsor">{{sponsor[0]}}</option>
+                <option v-for="sponsor in sponsors" :key="sponsor">{{ sponsor[0] }}</option>
             </select>
         </div>
 
