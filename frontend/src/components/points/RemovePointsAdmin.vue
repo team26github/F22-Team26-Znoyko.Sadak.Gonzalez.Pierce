@@ -81,7 +81,7 @@
             fetchDrivers() {
 
                 // Axios API call to python backend to get all available drivers from database
-                axios.get(this.path + '/get-drivers', { params: { user_id: this.user_id } })
+                axios.get(this.path + '/get-drivers-admin', { params: { user_id: this.user_id } })
                     .then((res) => {
                         if (res.data.status === 'success') {
                             for (const name of res.data.results) {
@@ -124,7 +124,7 @@
 
             // Getting username from route URL and setting Axios API path to either
             // localhost or production
-            this.path = this.production_path;
+            this.path = this.localhost_path;
             this.username = this.$route.params.username;
 
             // Axios API call to python backend to get current user information
@@ -161,6 +161,7 @@
         border-color: black;
         gap: 1rem;
         background-color: #ff90b3;
+        overflow-y: auto;
     }
 
     .input-container {

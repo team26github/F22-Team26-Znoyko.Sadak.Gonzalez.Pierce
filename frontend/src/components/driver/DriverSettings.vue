@@ -32,7 +32,7 @@
             if (sessionStorage.getItem('loggedIn') !== 'true') this.$router.push({name: 'login'});
 
             this.username = this.$route.params.username;
-            this.path = this.production_path;
+            this.path = this.localhost_path;
 
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
                 .then((res) => {
@@ -62,6 +62,7 @@
         border-color: black;
         gap: 1rem;
         background-color: #0096c7;
+        overflow-y: auto;
     }
 
     .password, .username, .email {

@@ -227,7 +227,7 @@ def get_user_info():
 def get_drivers_admin():
     cursor = db.cursor()
 
-    query = f'SELECT FullName FROM UserInfo WHERE UserType = "Driver"'
+    query = f'SELECT FullName FROM UserInfo WHERE UserType = "Driver" AND Active = "Yes"'
 
     cursor.execute(query)
     results = cursor.fetchall()

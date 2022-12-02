@@ -79,20 +79,26 @@
             // Method to change selected driver to inactive in database
             submit_inactivation() {                 
 
-                // Axios API call to python backend to deactive selected driver
-                axios.post(this.path + '/deactivate-user', null, {params: {username: this.driver_selected}}) 
-                    .then((res) => {
-                        if (res.data.status === "success") {
-                            console.log("success");
-                        }
-                        else {
-                            window.alert("Cannot add points.");
-                        }
-                    })
-                    .catch((error) => {
-                        // esling-disable-next-line
-                        console.log(error);
-                    })
+                if (this.driver_selected !== '') {
+                    
+                    // Axios API call to python backend to deactive selected driver
+                    axios.post(this.path + '/deactivate-user', null, {params: {username: this.driver_selected}}) 
+                        .then((res) => {
+                            if (res.data.status === "success") {
+                                console.log("success");
+                            }
+                            else {
+                                window.alert("Cannot add points.");
+                            }
+                        })
+                        .catch((error) => {
+                            // esling-disable-next-line
+                            console.log(error);
+                        })
+                }
+                else {
+                    window.alert('Please select a driver to set inactive');
+                }
             },
         },
 
@@ -105,7 +111,7 @@
 
             // Getting username from route URL and setting Axios API path to either
             // localhost or production
-            this.path = this.production_path;
+            this.path = this.localhost_path;
             this.username = this.$route.params.username;
 
             // Axios API call to python backend to get current user information
@@ -142,6 +148,7 @@
         border-color: black;
         gap: 1rem;
         background-color: #73bfb8;
+        overflow-y: auto;
     }
 
     .input-container {

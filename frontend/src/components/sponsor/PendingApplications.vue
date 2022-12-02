@@ -17,9 +17,9 @@
             <div>Select Decision:</div>
             <select name = "selected"  @change="eventChange($event)" required>
                 <option disabled value="">Please select a decision:</option>
-                <option value="Accepted">Accepted</option>
-                <option value="Rejected">Rejected</option>
                 <option value="Pending">Pending</option>
+                <option value="Accepted">Accepted</option>
+                <option value="Rejected">Rejected</option>    
             </select>
 
             <br><br>
@@ -60,7 +60,7 @@
                 localhost_path: "http://localhost:5000",
                 path: null,
                 driver_selected: '',
-                decision: '',
+                decision: 'Accepted',
                 reason: ''
             };
         },
@@ -135,7 +135,7 @@
 
             // Getting username from route URL and setting Axios API path to either
             // localhost or production
-            this.path = this.production_path;
+            this.path = this.localhost_path;
             this.username = this.$route.params.username;
 
             // Axios API call to python backend to get current user information
@@ -168,6 +168,7 @@
         border-color: black;
         gap: 1rem;
         background-color: #73bfb8;
+        overflow-y: auto;
     }
 
     .input-container {

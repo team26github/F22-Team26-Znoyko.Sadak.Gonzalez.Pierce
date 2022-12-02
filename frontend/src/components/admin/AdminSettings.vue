@@ -131,7 +131,8 @@
                     selected -->
                 <div class="driver-info" v-for="driver in display_drivers()" :key="driver">
                     <p><strong>Full Name:</strong> {{ driver.full_name }}<input type="text" placeholder="New Name" v-model="new_info['FullName']" v-if="update_driver[driver.full_name]"/></p>
-                    <p><strong>Username:</strong> {{ driver.username }}<input type="text" placeholder="New Username" v-model="new_info['Username']" v-if="update_driver[driver.full_name]"/></p>
+                    <!-- <p><strong>Username:</strong> {{ driver.username }}<input type="text" placeholder="New Username" v-model="new_info['Username']" v-if="update_driver[driver.full_name]"/></p> -->
+                    <p><strong>Username:</strong> {{ driver.username }}</p>
                     <p><strong>User ID:</strong> {{ driver.user_id }}</p>
                     <p><strong>Email:</strong> {{ driver.email }}<input type="text" placeholder="New Email" v-model="new_info['Email']" v-if="update_driver[driver.full_name]"/></p>
                     <p><strong>Points Limit:</strong> {{ driver.points_limit }} points<input type="text" placeholder="New Points Limit" v-model="new_info['PointsLimit']" v-if="update_driver[driver.full_name]"/></p>
@@ -167,7 +168,8 @@
                     selected -->
                 <div class="sponsor-info" v-for="sponsor in display_sponsors()" :key="sponsor">
                     <p><strong>Full Name:</strong> {{ sponsor.full_name }}<input type="text" placeholder="New Name" v-model="new_info['FullName']" v-if="update_sponsor[sponsor.full_name]"/></p>
-                    <p><strong>Username:</strong> {{ sponsor.username }}<input type="text" placeholder="New Username" v-model="new_info['Username']" v-if="update_sponsor[sponsor.full_name]"/></p>
+                    <!-- <p><strong>Username:</strong> {{ sponsor.username }}<input type="text" placeholder="New Username" v-model="new_info['Username']" v-if="update_sponsor[sponsor.full_name]"/></p> -->
+                    <p><strong>Username:</strong> {{ sponsor.username }}</p>
                     <p><strong>User ID:</strong> {{ sponsor.user_id }}</p>
                     <p><strong>Email:</strong> {{ sponsor.email }}<input type="text" placeholder="New Email" v-model="new_info['Email']" v-if="update_sponsor[sponsor.full_name]"/></p>
                     <p><strong>Points Limit:</strong> {{ sponsor.points_limit }} points<input type="text" placeholder="New Points Limit" v-model="new_info['PointsLimit']" v-if="update_sponsor[sponsor.full_name]"/></p>
@@ -214,7 +216,8 @@
                     or if there is a specific admin selected -->
                 <div class="admin-info" v-for="admin in display_admins()" :key="admin">
                     <p><strong>Full Name:</strong> {{ admin.full_name }}<input type="text" placeholder="New Name" v-model="new_info['FullName']" v-if="update_admin[admin.full_name]"/></p>
-                    <p><strong>Username:</strong> {{ admin.username }}<input type="text" placeholder="New Username" v-model="new_info['Username']" v-if="update_admin[admin.full_name]"/></p>
+                    <!-- <p><strong>Username:</strong> {{ admin.username }}<input type="text" placeholder="New Username" v-model="new_info['Username']" v-if="update_admin[admin.full_name]"/></p> -->
+                    <p><strong>Username:</strong> {{ admin.username }}</p>
                     <p><strong>User ID:</strong> {{ admin.user_id }}</p>
                     <p><strong>Email:</strong> {{ admin.email }}<input type="text" placeholder="New Email" v-model="new_info['Email']" v-if="update_admin[admin.full_name]"/></p>
                     <p><strong>Points Limit:</strong> {{ admin.points_limit }} points<input type="text" placeholder="New Points Limit" v-model="new_info['PointsLimit']" v-if="update_admin[admin.full_name]"/></p>
@@ -330,7 +333,7 @@
         if (sessionStorage.getItem('loggedIn') !== 'true') this.$router.push({name: 'login'});
 
         this.username = this.$route.params.username;
-        this.path = this.production_path;
+        this.path = this.localhost_path;
         axios.get(this.path + '/userinfo', {params: {username: this.username}})
             .then((res) => {
                 if (res.data.status === 'success') { 
@@ -699,6 +702,7 @@
         border-color: black;
         gap: 1rem;
         background-color: #ff90b3;
+        overflow-y: auto;
     }
 
     .row {

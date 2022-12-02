@@ -14,7 +14,7 @@
             <div class="username-container">
                 <div class="username">
                     <p><strong>Username: </strong>{{ username }}</p>
-                    <button @click="edit_username"><span>Edit Username</span></button>
+                    <!-- <button @click="edit_username"><span>Edit Username</span></button> -->
                 </div>
             </div>
         </div>
@@ -91,7 +91,7 @@
             this.username = this.$route.params.username;
 
             // Sets path for axios API calls to either localhost or production
-            this.path = this.production_path;
+            this.path = this.localhost_path;
 
             // Axios API call to python backend to get user information
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
@@ -258,6 +258,7 @@
         border-color: black;
         gap: 1rem;
         background-color: #ff90b3;
+        overflow-y: auto;
     }
 
     .password, .username, .email {
