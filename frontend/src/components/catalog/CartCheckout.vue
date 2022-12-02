@@ -164,13 +164,13 @@
             submit_purchase() {
                 if (this.items.length > 0) {
 
-                    if ((this.first_name === '' || this.first_name === null) || 
-                        (this.last_name === '' || this.last_name === null) || 
-                        (this.address === '' || this.address === null) ||
-                        (this.address_city === '' || this.address_city === null) ||
-                        (this.address_state === '' || this.address_state === null) ||
-                        (this.address_zip_code === '' || this.address_zip_code === null) ||
-                        (this.email === '' || this.email === null)) {
+                    if ((this.first_name.trim() === '' || this.first_name === null) || 
+                        (this.last_name.trim() === '' || this.last_name === null) || 
+                        (this.address.trim() === '' || this.address === null) ||
+                        (this.address_city.trim() === '' || this.address_city === null) ||
+                        (this.address_state.trim() === '' || this.address_state === null) ||
+                        (this.address_zip_code.trim() === '' || this.address_zip_code === null) ||
+                        (this.email.trim() === '' || this.email === null)) {
                             window.alert("All fields must be filled out to submit a purchase");
                             return;
                     }

@@ -178,7 +178,7 @@
             search() {
 
                 // If the search box is not empty
-                if (this.search_text !== null && this.search_text !== "") {
+                if (this.search_text !== null && this.search_text.trim() !== "") {
 
                     let keywords = '';
                     this.catalog_items = [];

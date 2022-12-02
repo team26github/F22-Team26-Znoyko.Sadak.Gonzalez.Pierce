@@ -66,9 +66,9 @@
             // Method to reset password
             reset() {
 
-                if ((this.full_name === '' || this.full_name === null) || 
-                    (this.username === '' || this.username === null) || 
-                    (this.new_passwd === '' || this.new_passwd === null)) {
+                if ((this.full_name.trim() === '' || this.full_name === null) || 
+                    (this.username.trim() === '' || this.username === null) || 
+                    (this.new_passwd.trim() === '' || this.new_passwd === null)) {
                         window.alert("Please fill out all fields to reset your password");
                         return;
                     }

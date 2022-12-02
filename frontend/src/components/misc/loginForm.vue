@@ -59,11 +59,11 @@
 
         // Method to validate login information
         get_login() {
-            if (this.username === "") {
+            if (this.username.trim() === "") {
                 this.status = "Username cannot be blank.";
                 return;
             }
-            else if (this.password === "") {
+            else if (this.password.trim() === "") {
                 this.status = "Password cannot be blank.";
                 return;
             }

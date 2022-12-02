@@ -138,7 +138,7 @@
             create_driver() {                 
 
                 // Checking to see if all fields are filled out before submission
-                if (this.first_name !== '' && this.last_name !== '' && this.driver_username !== '' && this.email !== '' && this.password !== '' && this.sponsor_selected !== '') {
+                if (this.first_name.trim() !== '' && this.last_name.trim() !== '' && this.driver_username.trim() !== '' && this.email.trim() !== '' && this.password.trim() !== '' && this.sponsor_selected.trim() !== '') {
 
                 // Axios API call to python backend to check for duplicate users
                     axios.get(this.path + '/new-user', {params: {username: this.driver_username, email: this.email}})

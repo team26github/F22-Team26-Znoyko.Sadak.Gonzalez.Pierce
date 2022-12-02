@@ -108,9 +108,9 @@
             // Method to submit decision to databse
             submit_application() {                 
 
-                if ((this.driver_selected === '' || this.driver_selected === null) || 
-                    (this.reason === '' || this.reason === null) || 
-                    (this.decision === '' || this.decision === null)) {
+                if ((this.driver_selected.trim() === '' || this.driver_selected === null) || 
+                    (this.reason.trim() === '' || this.reason === null) || 
+                    (this.decision.trim() === '' || this.decision === null)) {
                         window.alert("Please fill out all fields and select options from all dropdown menus to accept or reject a driver");
                         return;
                     }

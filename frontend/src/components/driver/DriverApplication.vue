@@ -120,7 +120,7 @@
             submit_application() {              
                 if (this.first_name !== '' && this.last_name !== '' && this.username !== '' && this.password !== '') {
 
-                    if (this.sponsor_selected === '') {
+                    if (this.sponsor_selected.trim() === '') {
                         window.alert("Please select a sponsor to apply for");
                         return;
                     }

@@ -98,7 +98,7 @@
             create_sponsor() {
 
                 // Checking to see if all fields are filled out before submission
-                if (this.first_name !== '' && this.last_name !== '' && this.sponsor_username !== '' && this.email !== '' && this.password !== '') {
+                if (this.first_name.trim() !== '' && this.last_name.trim() !== '' && this.sponsor_username.trim() !== '' && this.email.trim() !== '' && this.password.trim() !== '') {
 
                 // Axios API call to python backend to check for duplicate users
                     axios.get(this.path + '/new-user', {params: {username: this.sponsor_username, email: this.email}})

@@ -184,7 +184,7 @@
                     special = /[ !"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/;
 
                 // Checking to see if a new password was inputted
-                if (new_password === '' || new_password === null) {
+                if (new_password.trim() === '' || new_password === null) {
                     window.alert("New password cannot be blank. Password must contain at least one upper and lower case letter, at least one number, and at least one special character.");
                     return;
                 }
@@ -198,7 +198,7 @@
                 }
 
                 // Checking to see if new password is different from old password
-                if(new_password === this.password){
+                if(new_password.trim() === this.password){
                     window.alert("New password must be different than old password")
                     update = false;
                 }
@@ -232,7 +232,7 @@
                 // Getting new email from user
                 let new_email = window.prompt("Enter new email");
 
-                if (new_email === '' || new_email === null) {
+                if (new_email.trim() === '' || new_email === null) {
                     window.alert("New email cannot be blank");
                     return;
                 }
