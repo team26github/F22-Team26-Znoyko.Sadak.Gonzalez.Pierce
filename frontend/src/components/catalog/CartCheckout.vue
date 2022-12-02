@@ -200,9 +200,9 @@
 
                 // Axios API call to python backend to get the user's point balance
                 axios.get(this.path + '/userinfo', {params: {request: 'username'}})
-                .then(function(response){
+                    .then(function(response){
                         this.points_balance = response.data.results[0][11];
-                });
+                    });
             },
         },
 
@@ -213,7 +213,9 @@
 </script>
 
 <style scoped>
-    * {box-sizing: border-box;}
+    * {
+        box-sizing: border-box;
+    }
 
     .checkout{
         /* display: flex; */
@@ -228,54 +230,45 @@
     }
 
     .input-container {
-    display: flex;
-    width: 100%;
-    margin-bottom: 15px;
-    }
-
-    /* Style the form icons */
-    .icon {
-    padding: 10px;
-    background: #8c72e0;
-    color: white;
-    min-width: 50px;
-    text-align: center;
+        display: flex;
+        width: 100%;
+        margin-bottom: 15px;
     }
 
     /* Style the input fields */
     .input-field {
-    width: 100%;
-    padding: 10px;
-    outline: none;
+        width: 100%;
+        padding: 10px;
+        outline: none;
     }
 
     .input-field:focus {
-    border: 2px solid #8c72e0;
+        border: 2px solid #8c72e0;
     }
 
     /* Set a style for the submit button */
     .btn {
-    background-color: #8c72e0;
-    color: white;
-    padding: 15px 20px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    opacity: 0.9;
+        background-color: #8c72e0;
+        color: white;
+        padding: 15px 20px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        opacity: 0.9;
     }
 
     .btn:hover {
-    opacity: 1;
+        opacity: 1;
     }
 
     .btn:disabled{
-    background-color: #acacaf;
-    color: white;
-    padding: 15px 20px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    opacity: 0.9;
+        background-color: #acacaf;
+        color: white;
+        padding: 15px 20px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        opacity: 0.9;
     }
 
     .catalog-items ul {
