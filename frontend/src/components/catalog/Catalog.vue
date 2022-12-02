@@ -165,8 +165,7 @@
                             }
                         }
                         else {
-                            console.log("Failed to get catalog items");
-                            console.log(`Results: ${res.data.results}`);
+                            window.alert("Failed to get catalog items");
                         }
                     })
                     .catch((err) => {
