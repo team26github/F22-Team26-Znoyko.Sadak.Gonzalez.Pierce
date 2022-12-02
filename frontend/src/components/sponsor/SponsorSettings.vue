@@ -213,7 +213,7 @@
             // Getting username for user from URL and setting path for axios API calls
             // to either localhost or production
             this.username = this.$route.params.username;
-            this.path = this.production_path;
+            this.path = this.localhost_path;
 
             // Axios API call to python backend to get current user information
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
@@ -308,7 +308,7 @@
                     axios.post(this.path + '/update-catalog-filters', null, {params: {catalog_filters: filters, user_id: this.user_id}})
                         .then((res) => {
                             if (res.data.status === 'success') {
-                                this.catalog_filters = filters.split(',');
+                                this.catalog_filters = filters.split(/[,\s]\s*/);
                                 window.alert(`The new filters for drivers are: ${this.catalog_filters}`);
                             }
                         })
@@ -444,24 +444,14 @@
         border-color: black;
         gap: 1rem;
         background-color: #73bfb8;
-    }
-
-    .profile-container2 {
-        display: flex;
-        flex-direction: row;
-        width: 98.5vw;
-        height: 95vh;
-        border-style: none solid solid solid;
-        border-color: black;
-        gap: 1rem;
-        background-color: #73bfb8;
+        overflow-y: auto;
     }
 
     .settings-container {
         display: flex;
         flex-direction: column;
         width: 50%;
-        height: 97.5vh;
+        height: 50%;
         gap: 1rem;
     }
 
@@ -563,7 +553,7 @@
         display: flex;
         flex-direction: column;
         width: 30%;
-        height: 50%;
+        height: 16%;
         overflow-y: auto;
         border-style: solid;
         border-color: black;

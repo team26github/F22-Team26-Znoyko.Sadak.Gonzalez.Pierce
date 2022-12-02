@@ -87,7 +87,7 @@ import NavBar from '../misc/NavBar.vue';
 
             // Gets username of user from route url
             this.username = this.$route.params.username;
-            this.path = this.production_path;
+            this.path = this.localhost_path;
 
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
                 .then((res) => {
@@ -120,6 +120,7 @@ import NavBar from '../misc/NavBar.vue';
         border-color: black;
         gap: 1rem;
         background-color: #ff90b3;
+        overflow-y: auto;
     }
 
     .password, .username, .email {

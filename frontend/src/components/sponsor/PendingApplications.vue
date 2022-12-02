@@ -135,7 +135,7 @@
 
             // Getting username from route URL and setting Axios API path to either
             // localhost or production
-            this.path = this.production_path;
+            this.path = this.localhost_path;
             this.username = this.$route.params.username;
 
             // Axios API call to python backend to get current user information
@@ -168,6 +168,7 @@
         border-color: black;
         gap: 1rem;
         background-color: #73bfb8;
+        overflow-y: auto;
     }
 
     .input-container {

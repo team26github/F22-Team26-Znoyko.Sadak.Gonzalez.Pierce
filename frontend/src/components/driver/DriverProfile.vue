@@ -128,7 +128,7 @@
             // Getting username for user from URL and setting path for axios API calls
             // to either localhost or production
             this.username = this.$route.params.username;
-            this.path = this.production_path;
+            this.path = this.localhost_path;
 
             // Axios API call to python backend to get current user information
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
@@ -338,6 +338,7 @@
         border-color: black;
         gap: 1rem;
         background-color: #0096c7;
+        overflow-y: auto;
     }
 
     .password, .username, .email {
