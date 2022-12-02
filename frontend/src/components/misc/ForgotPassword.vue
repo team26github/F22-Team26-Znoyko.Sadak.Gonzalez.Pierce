@@ -47,7 +47,7 @@
                 full_name: null,
                 username: null,
                 email: null,
-                new_password: null,
+                new_passwd: null,
                 production_path: "https://www.spacebarcowboys.com",
                 localhost_path: "http://localhost:5000",
                 path: null
@@ -65,6 +65,13 @@
 
             // Method to reset password
             reset() {
+
+                if ((this.full_name === '' || this.full_name === null) || 
+                    (this.username === '' || this.username === null) || 
+                    (this.new_passwd === '' || this.new_passwd === null)) {
+                        window.alert("Please fill out all fields to reset your password");
+                        return;
+                    }
 
                 // Axios API call to python backend to reset password
                 axios.get(this.path + '/reset-passwd', { params: { full_name: this.full_name, username: this.username, new_passwd: this.new_passwd } })

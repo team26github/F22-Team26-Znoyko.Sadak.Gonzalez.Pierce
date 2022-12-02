@@ -118,13 +118,23 @@
 
             // Method for submitting application
             submit_application() {              
-                if (this.first_name !== '' && this.last_name !== '' && this.username !== '' && this.password !== '' && this.sponsor_selected !== '') {
+                if (this.first_name !== '' && this.last_name !== '' && this.username !== '' && this.password !== '') {
+
+                    if (this.sponsor_selected === '') {
+                        window.alert("Please select a sponsor to apply for");
+                        return;
+                    }
 
                     // Axios API call to python backend to add application to database
                     axios.post(this.path + '/apply', null, {params: {email: this.email, first_name: this.first_name, last_name: this.last_name, username: this.username, password: this.password, sponsor: this.sponsor_selected}}) 
                         .then((res) => {
                             if (res.data.status === "success") {
-                                console.log("success");
+                                window.alert("Application submitted successfully");
+                                this.first_name = '';
+                                this.last_name = '';
+                                this.username = '';
+                                this.password = '';
+                                this.sponsor_selected = '';
                             }
                             else {
                                 window.alert("Cannot submit application.");
