@@ -333,7 +333,7 @@
         if (sessionStorage.getItem('loggedIn') !== 'true') this.$router.push({name: 'login'});
 
         this.username = this.$route.params.username;
-        this.path = this.localhost_path;
+        this.path = this.production_path;
         axios.get(this.path + '/userinfo', {params: {username: this.username}})
             .then((res) => {
                 if (res.data.status === 'success') { 

@@ -75,7 +75,7 @@
             if (sessionStorage.getItem('loggedIn') !== 'true') this.$router.push({name: 'login'});
 
             this.username = this.$route.params.username;
-            this.path = this.localhost_path;
+            this.path = this.production_path;
 
             // Axios API call to python backend to get user information from the database
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
