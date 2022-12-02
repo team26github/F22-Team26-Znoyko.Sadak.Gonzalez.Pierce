@@ -78,7 +78,13 @@
 
             // Method to change selected user to inactive in database
             submit_inactivation() { 
+                console.log(this.user_selected);
                 
+                if (this.user_selected.trim() === '' || this.user_selected === null) {
+                    window.alert("Please select a user to set inactive");
+                    return;
+                }
+
                 // Axios API call to python backend to set selected user to inactive in database
                 axios.post(this.path + '/deactivate-user-admin', null, {params: {username: this.user_selected}}) 
                     .then((res) => {
@@ -86,7 +92,7 @@
                             console.log("success");
                         }
                         else {
-                            window.alert("Cannot add points.");
+                            window.alert("Cannot set user inactive.");
                         }
                     })
                     .catch((error) => {

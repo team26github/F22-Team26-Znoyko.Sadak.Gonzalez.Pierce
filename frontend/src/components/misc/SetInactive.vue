@@ -79,13 +79,13 @@
             // Method to change selected driver to inactive in database
             submit_inactivation() {                 
 
-                if (this.driver_selected !== '') {
+                if (this.driver_selected.trim() !== '') {
                     
                     // Axios API call to python backend to deactive selected driver
                     axios.post(this.path + '/deactivate-user', null, {params: {username: this.driver_selected}}) 
                         .then((res) => {
                             if (res.data.status === "success") {
-                                console.log("success");
+                                window.log(`${this.driver_selected} set inactive successfully`);
                             }
                             else {
                                 window.alert("Cannot add points.");
