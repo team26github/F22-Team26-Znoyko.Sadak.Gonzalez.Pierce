@@ -212,6 +212,9 @@
                             console.log(err);
                         })
                 }
+                else {
+                    window.alert("Search bar cannot be empty");
+                }
             },
 
             // Method to add items to the cart

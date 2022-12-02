@@ -164,11 +164,22 @@
             submit_purchase() {
                 if (this.items.length > 0) {
 
+                    if ((this.first_name === '' || this.first_name === null) || 
+                        (this.last_name === '' || this.last_name === null) || 
+                        (this.address === '' || this.address === null) ||
+                        (this.address_city === '' || this.address_city === null) ||
+                        (this.address_state === '' || this.address_state === null) ||
+                        (this.address_zip_code === '' || this.address_zip_code === null) ||
+                        (this.email === '' || this.email === null)) {
+                            window.alert("All fields must be filled out to submit a purchase");
+                            return;
+                    }
+
                     // Axios API call to python backend to add purchase information to the database
                     axios.post(this.path + '/submit-purchase', null, {params: {first_name: this.first_name, last_name: this.last_name, address: this.address, address_city: this.address_city, address_state: this.address_state, address_zip_code: this.address_zip_code, email: this.email, items: JSON.stringify(this.items), items_total: this.items_total, points_total: this.points_total, user_id: this.user_id, sponsor_id: this.sponsor_id }}) 
                         .then((res) => {
                             if (res.data.status === "success") {
-                                console.log("success");
+                                window.alert("Purchase submitted successfully");
                             }
                             else {
                                 window.alert("Cannot submit purchase.");
