@@ -57,7 +57,7 @@
         // Mounted function is used for doing operations right after the component
         // Is mounted and right before the component is shown to the user
         mounted() {
-            this.path = this.localhost_path;
+            this.path = this.production_path;
         },
 
         // Component specific methods
@@ -103,7 +103,6 @@
     display: grid;
     place-items: center;
     background-color: #fff;
-    overflow-y: auto;
   }
 
     .input-container {

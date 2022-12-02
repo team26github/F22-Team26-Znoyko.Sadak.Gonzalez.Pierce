@@ -55,8 +55,7 @@
                 localhost_path: "http://localhost:5000",
                 path: null,
                 driver_selected:'',
-                reason:'',
-                num_points: ''
+                reason:''
             };
         },
 
@@ -95,28 +94,23 @@
             },
 
             // Method to update database with new points value for selected driver
-            submit_application() {        
+            submit_application() {                 
 
-                if (this.num_points !== '' && this.reason !== '' && this.driver_selected !== '') {
                 // Axios API call to python backend to update database with new points
                 // value for selected driver
-                    axios.post(this.path + '/remove_points', null, {params: {num_points: this.num_points, reason: this.reason, driver: this.driver_selected, sponsor: this.user_id}}) 
-                        .then((res) => {
-                            if (res.data.status === "success") {
-                                console.log("success");
-                            }
-                            else {
-                                window.alert("Cannot remove points.");
-                            }
-                        })
-                        .catch((error) => {
-                            // esling-disable-next-line
-                            console.log(error);
-                        })
-                    }
-                    else {
-                        window.alert("Please fill out all fields");
-                    }
+                axios.post(this.path + '/remove_points', null, {params: {num_points: this.num_points, reason: this.reason, driver: this.driver_selected, sponsor: this.user_id}}) 
+                    .then((res) => {
+                        if (res.data.status === "success") {
+                            console.log("success");
+                        }
+                        else {
+                            window.alert("Cannot remove points.");
+                        }
+                    })
+                    .catch((error) => {
+                        // esling-disable-next-line
+                        console.log(error);
+                    })
             },
         },
 
@@ -129,7 +123,7 @@
 
             // Getting username from route URL and setting Axios API path to either
             // localhost or production
-            this.path = this.localhost_path;
+            this.path = this.production_path;
             this.username = this.$route.params.username;
 
             // Axios API call to python backend to get current user information
@@ -166,7 +160,6 @@
         border-color: black;
         gap: 1rem;
         background-color: #73bfb8;
-        overflow-y: auto;
     }
 
     .input-container {

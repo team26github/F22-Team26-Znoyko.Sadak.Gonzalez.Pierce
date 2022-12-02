@@ -75,7 +75,7 @@
             if (sessionStorage.getItem('loggedIn') !== 'true') this.$router.push({name: 'login'});
 
             this.username = this.$route.params.username;
-            this.path = this.localhost_path;
+            this.path = this.production_path;
 
             // Axios API call to python backend to get user information from the database
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
@@ -84,7 +84,7 @@
                             this.user_id = res.data.results[0][0];
                             this.user_type = res.data.results[0][2];
                             this.point_conversion = res.data.results[0][8];
-                            this.catalog_filters = res.data.results[0][10].split(/[,\s]\s*/);
+                            this.catalog_filters = res.data.results[0][10].split(',');
 
                             if (sessionStorage.getItem('userID') !== this.user_id.toString()) this.$router.push({name: 'login'});
 

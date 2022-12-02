@@ -99,7 +99,7 @@
             if (sessionStorage.getItem('loggedIn') !== 'true') this.$router.push({name: 'login'});
 
             this.username = this.$route.params.username;
-            this.path = this.localhost_path;
+            this.path = this.production_path;
 
             axios.get(this.path + '/userinfo', {params: {username: this.username}})
                 .then((res) => {
@@ -132,7 +132,6 @@
         border-color: black;
         gap: 1rem;
         background-color: #73bfb8;
-        overflow-y: auto;
     }
 
     .row {
