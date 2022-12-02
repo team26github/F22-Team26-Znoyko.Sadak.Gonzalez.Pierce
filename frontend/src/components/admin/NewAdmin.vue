@@ -168,6 +168,7 @@
         border-color: black;
         gap: 1rem;
         background-color: #ff90b3;
+        overflow-y: auto;
     }
     .input-container {
     display: flex;

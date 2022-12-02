@@ -143,6 +143,7 @@
     display: grid;
     place-items: center;
     background-color: #8c72e0;
+    overflow-y: auto;
   }
 
   .login {

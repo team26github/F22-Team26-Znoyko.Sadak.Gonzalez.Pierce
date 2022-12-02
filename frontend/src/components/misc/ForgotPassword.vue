@@ -103,6 +103,7 @@
     display: grid;
     place-items: center;
     background-color: #fff;
+    overflow-y: auto;
   }
 
     .input-container {

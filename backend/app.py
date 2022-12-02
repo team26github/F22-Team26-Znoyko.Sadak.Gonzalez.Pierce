@@ -248,7 +248,7 @@ def get_drivers():
     user_id = request.args.get('user_id', '')
     cursor = db.cursor()
     
-    query = f'SELECT FullName FROM UserInfo WHERE SponsorID = {user_id}'
+    query = f'SELECT FullName FROM UserInfo WHERE SponsorID = {user_id} and UserType = "Driver" and Active = "Yes"'
 
     cursor.execute(query)
     results = cursor.fetchall()
@@ -659,19 +659,21 @@ def submit_deduction():
     status = 'failure'
 
     num_points = request.args.get('num_points', '')
-    num_points = -abs(int(num_points))
+    num_points = abs(int(num_points))
     reason = request.args.get('reason', '')
     driver = request.args.get('driver', '')
     sponsor_id = request.args.get('sponsor', '')
 
-    query = f'SELECT DRIVER_ID FROM DriverApplications WHERE FIRST_NAME="{str(driver).split()[0]}" AND LAST_NAME="{str(driver).split()[1]}"'
+    query = f'SELECT UserID, Points FROM UserInfo WHERE FullName = "{driver}"'
     cursor.execute(query)
     results = cursor.fetchall()
     driver_id=results[0][0]
+    current_points = results[0][1]
+    points_change = current_points - num_points
     query = f'INSERT INTO PointsChange (DriverID, PointChange, DateTimeStamp, ChangeReason, PointChangerID) VALUES("{driver_id}","{num_points}","{datetime.now()}","{reason}","{sponsor_id}")'
     cursor.execute(query)
-
     db.commit()
+    query = f'UPDATE UserInfo SET Points = {points_change} WHERE FullName = {driver} and UserType = "Driver"'
     status = 'success'
         
     return jsonify({'status': status})
@@ -813,4 +815,4 @@ def deactivateadmin():
     return jsonify({'status': status})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)

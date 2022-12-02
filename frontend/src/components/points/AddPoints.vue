@@ -161,6 +161,7 @@
         border-color: black;
         gap: 1rem;
         background-color: #73bfb8;
+        overflow-y: auto;
     }
 
     .input-container {

@@ -232,6 +232,7 @@
         border-color: black;
         gap: 1rem;
         background-color: #0096c7;
+        overflow-y: auto;
     }
 
     .input-container {
