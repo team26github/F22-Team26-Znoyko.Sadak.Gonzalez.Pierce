@@ -14,7 +14,6 @@
             <div class="username-container">
                 <div class="username">
                     <p><strong>Username: </strong>{{ username }}</p>
-                    <!-- <button @click="edit_username"><span>Edit Username</span></button> -->
                 </div>
             </div>
         </div>
@@ -34,8 +33,8 @@
             <!-- Container for button to display drivers associated with the sponsor -->
             <div class="drivers-container">
                 <div class="drivers">
-                    <p><strong>Drivers: </strong>{{ selected }} </p>
-                    <button @click="fetchDrivers"><span>View Drivers</span></button>
+                    <p><strong>Drivers Associated with You: </strong></p>
+                    <p>{{ display_drivers() }} </p>
                 </div>
             </div>
         </div>
@@ -51,14 +50,6 @@
             <div class="user-type-container">
                 <p><strong>UserType: </strong>{{ user_type }}</p>
             </div>
-        </div>
-        <div class="row">
-            
-        </div>
-
-        <!-- Display container for drivers associated with a sponsor -->
-        <div class="row">
-            <option v-for="driver in drivers" :key="driver">{{driver}}</option>
         </div>
     </div>
 </template>
@@ -115,6 +106,8 @@
                         this.email = res.data.results[0][3];
 
                         if (sessionStorage.getItem('userID') !== this.user_id.toString()) this.$router.push({name: 'login'});
+
+                        this.fetchDrivers();
                     }
                     else {
                         window.alert('Could not find this user, logging out now');
@@ -169,43 +162,6 @@
                     this.button_text = "Hide Password";
                 }
             },
-
-            // Method to change sponsor username
-            // edit_username() {
-
-            //     // Getting new username from sponsor
-            //     let new_username = window.prompt("Enter new username");
-
-            //     // Axios API call to python backend to check for duplicate users
-            //     axios.get(this.path + '/edit', {params: {request: 'username', username: new_username}})
-            //         .then((res) => {
-            //             if (res.data.status === 'success') {       
-
-            //                 // Axios API call to python backend to update username
-            //                 axios.post(this.path + '/edit', null, {params: {request: 'username', username: new_username, userid: 3}})
-            //                     .then((res) => {
-            //                         if (res.data.status === "success") {
-            //                             this.username = new_username;
-            //                             console.log("success");
-            //                         }
-            //                         else {
-            //                             window.alert("Username change unsuccessful");
-            //                         }
-            //                     })
-            //                     .catch((error) => {
-            //                         // esling-disable-next-line
-            //                         console.log(error);
-            //                     })
-            //             }
-            //             else {
-            //                 window.alert("That username is unavailable.");
-            //             }
-            //         })
-            //         .catch((error) => {
-            //             // esling-disable-next-line
-            //             console.log(error);
-            //         })
-            // },
 
             // Method to change sponsor password
             edit_password() {
@@ -300,6 +256,18 @@
                     }
                 })
             },
+
+            display_drivers() {
+                let drivers_string = '';
+
+                for (let i = 0; i < this.drivers.length - 1; i++) {
+                    drivers_string += this.drivers[i] + ', ';
+                }
+
+                drivers_string += this.drivers[this.drivers.length - 1];
+
+                return drivers_string;
+            }
         },
 
         // Components used from external files
@@ -343,6 +311,7 @@
         border-color: black;
         justify-content: start;
         align-items: center;
+        overflow-x: auto;
     }
 
     button {
