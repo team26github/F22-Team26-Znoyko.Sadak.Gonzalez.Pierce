@@ -171,41 +171,41 @@
             },
 
             // Method to change sponsor username
-            edit_username() {
+            // edit_username() {
 
-                // Getting new username from sponsor
-                let new_username = window.prompt("Enter new username");
+            //     // Getting new username from sponsor
+            //     let new_username = window.prompt("Enter new username");
 
-                // Axios API call to python backend to check for duplicate users
-                axios.get(this.path + '/edit', {params: {request: 'username', username: new_username}})
-                    .then((res) => {
-                        if (res.data.status === 'success') {       
+            //     // Axios API call to python backend to check for duplicate users
+            //     axios.get(this.path + '/edit', {params: {request: 'username', username: new_username}})
+            //         .then((res) => {
+            //             if (res.data.status === 'success') {       
 
-                            // Axios API call to python backend to update username
-                            axios.post(this.path + '/edit', null, {params: {request: 'username', username: new_username, userid: 3}})
-                                .then((res) => {
-                                    if (res.data.status === "success") {
-                                        this.username = new_username;
-                                        console.log("success");
-                                    }
-                                    else {
-                                        window.alert("Username change unsuccessful");
-                                    }
-                                })
-                                .catch((error) => {
-                                    // esling-disable-next-line
-                                    console.log(error);
-                                })
-                        }
-                        else {
-                            window.alert("That username is unavailable.");
-                        }
-                    })
-                    .catch((error) => {
-                        // esling-disable-next-line
-                        console.log(error);
-                    })
-            },
+            //                 // Axios API call to python backend to update username
+            //                 axios.post(this.path + '/edit', null, {params: {request: 'username', username: new_username, userid: 3}})
+            //                     .then((res) => {
+            //                         if (res.data.status === "success") {
+            //                             this.username = new_username;
+            //                             console.log("success");
+            //                         }
+            //                         else {
+            //                             window.alert("Username change unsuccessful");
+            //                         }
+            //                     })
+            //                     .catch((error) => {
+            //                         // esling-disable-next-line
+            //                         console.log(error);
+            //                     })
+            //             }
+            //             else {
+            //                 window.alert("That username is unavailable.");
+            //             }
+            //         })
+            //         .catch((error) => {
+            //             // esling-disable-next-line
+            //             console.log(error);
+            //         })
+            // },
 
             // Method to change sponsor password
             edit_password() {
@@ -213,35 +213,47 @@
                 // Getting new password from sponsor and checking to make sure it meets password requirements
                 window.alert("Password must contain at least one upper and lower case letter, at least one number, and at least one special character.")
                 let new_password = window.prompt("Enter new password");
-                var minMaxLength = /^[\s\S]{8,20}$/,
+                let update = false;
+                let minMaxLength = /^[\s\S]{8,20}$/,
                     upper = /[A-Z]/,
                     lower  = /[a-z]/,
                     number = /[0-9]/,
                     special = /[ !"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/;
 
+                // Checking to see if a new password was inputted
+                if (new_password === '' || new_password === null) {
+                    window.alert("New password cannot be blank. Password must contain at least one upper and lower case letter, at least one number, and at least one special character.");
+                    return;
+                }
+
+                // Checking password to make sure it meets all requirements
+                if (minMaxLength.test(new_password) && upper.test(new_password) && lower.test(new_password) && number.test(new_password) && special.test(new_password)) {
+                    update = true;
+                }
+                else {
+                    update = false;
+                }
+
+                // Checking to see if new password is different from old password
+                if(new_password === this.password){
+                    window.alert("New password must be different than old password")
+                    update = false;
+                }
+
+                if (!update) {
+                    window.alert("New password must be at least 8 characters and no more than 20. Contain at least one upper and lower case letter, at least one number, and at least one special character.");
+                    return;
+                }
+
                 // Axios API call to python backend to change password
                 axios.post(this.path + '/edit', null, {params: {request: 'password', password: new_password, userid: 3}})
                     .then((res) => {
-
-                        // Checking to make sure new password meets all requirements
-                        if (minMaxLength.test(new_password) && upper.test(new_password) && lower.test(new_password) && number.test(new_password) && special.test(new_password)) {
-                            res.data.status = "success";
-                        }
-                        else {
-                            res.data.status = "failure";
-                        }
-
-                        // Checking to see if new password is different from old password
-                        if(new_password === this.password){
-                            window.alert("New password must be different than old password")
-                            res.data.status = "failure"
-                        }
                         if (res.data.status === "success") {
                             this.password = new_password;
                             window.alert("Password change successful");
                         }
-                        if (res.data.status === "failure") {
-                            window.alert("New password must be at least 8 characters and no more than 20. Contain at least one upper and lower case letter, at least one number, and at least one special character.");
+                        else {
+                            window.alert("Cannot update password");
                         }
                         
                     })
@@ -256,6 +268,11 @@
 
                 // Getting new email from sponsor
                 let new_email = window.prompt("Enter new email");
+
+                if (new_email === '' || new_email === null) {
+                    window.alert("New email cannot be blank");
+                    return;
+                }
 
                 // Axios API call to python backend to check for duplicate email
                 axios.get(this.path + '/edit', {params: {request: 'email', email: new_email}})
