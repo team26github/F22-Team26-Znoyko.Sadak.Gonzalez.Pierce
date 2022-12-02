@@ -2,14 +2,13 @@
     <div class="profile-container">
         <form style="max-width:800px;margin:auto">
             <h1>Set Users Inactive</h1>
-
             <div>Select User:</div>
 
             <!-- Dropdown menu for user selection -->
             <select name = "selected" @change="onChange($event)" required>
                 <option disabled value="">Please select one user to make inactive:</option>
                 <option value="None">None</option>
-                <option v-for="user in users" :key="user">{{user}}</option>
+                <option v-for="user in users" :key="user">{{ user }}</option>
             </select>
 
             <br><br>
@@ -24,6 +23,7 @@
 
 <script>
     import axios from 'axios';
+
     export default {
 
         // Component name
@@ -48,7 +48,7 @@
             // Method to select a user based on dropdown menu selection
             onChange(e)
             {
-                this.user_selected=e.target.value
+                this.user_selected=e.target.value;
             },
 
             // Method to route user back to dashboard
@@ -56,7 +56,7 @@
                 this.$router.push({
                     name: 'admin-dashboard',
                     params: { username: this.username }
-                })
+                });
             },
 
             // Method to get all active users
@@ -137,7 +137,9 @@
 </script>
 
 <style scoped>
-    * {box-sizing: border-box;}
+    * {
+        box-sizing: border-box;
+    }
 
     .profile-container {
         display: flex;
@@ -151,43 +153,17 @@
         overflow-y: auto;
     }
 
-    .input-container {
-    display: flex;
-    width: 100%;
-    margin-bottom: 15px;
-    }
-
-    /* Style the form icons */
-    .icon {
-    padding: 10px;
-    background: #8c72e0;
-    color: white;
-    min-width: 50px;
-    text-align: center;
-    }
-
-    /* Style the input fields */
-    .input-field {
-    width: 100%;
-    padding: 10px;
-    outline: none;
-    }
-
-    .input-field:focus {
-    border: 2px solid #8c72e0;
-    }
-
     .btn {
-    background-color: #8c72e0;
-    color: white;
-    padding: 15px 20px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    opacity: 0.9;
+        background-color: #8c72e0;
+        color: white;
+        padding: 15px 20px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        opacity: 0.9;
     }
 
     .btn:hover {
-    opacity: 1;
+        opacity: 1;
     }
 </style>

@@ -100,56 +100,49 @@
 
 
 <style scoped>
-    * {box-sizing: border-box;}
+    * {
+        box-sizing: border-box;
+    }
 
     .profile-container {
-    width: 99.3vw;
-    height: 98.5vh;
-    display: grid;
-    place-items: center;
-    background-color: #fff;
-    overflow-y: auto;
+        width: 99.3vw;
+        height: 98.5vh;
+        display: grid;
+        place-items: center;
+        background-color: #fff;
+        overflow-y: auto;
   }
 
     .input-container {
-    display: auto;
-    width: 100%;
-    margin-bottom: 15px;
-    }
-
-    /* Style the form icons */
-    .icon {
-    padding: 10px;
-    background: #8c72e0;
-    color: white;
-    min-width: 50px;
-    text-align: center;
+        display: auto;
+        width: 100%;
+        margin-bottom: 15px;
     }
 
     /* Style the input fields */
     .input-field {
-    width: 100%;
-    padding: 10px;
-    outline: none;
+        width: 100%;
+        padding: 10px;
+        outline: none;
     }
 
     .input-field:focus {
-    border: 2px solid #555;
+        border: 2px solid #555;
     }
 
     /* Set a style for the submit button */
     .btn {
-    background-color: #8c72e0;
-    color: white;
-    padding: 15px 20px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    opacity: 0.9;
+        background-color: #8c72e0;
+        color: white;
+        padding: 15px 20px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        opacity: 0.9;
     }
 
     .btn:hover {
-    opacity: 1;
+        opacity: 1;
     }
 </style>
 

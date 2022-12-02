@@ -111,12 +111,4 @@
                     0 0 50px #8c72e0,
                     0 0 200px #8c72e0;
     }
-    
-    @media screen and (max-width: 500px) {
-        .navbar a {
-        float: none;
-        display: block;
-        }
-    }
-
 </style> 

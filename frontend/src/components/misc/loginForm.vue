@@ -1,26 +1,26 @@
 <template>
-  <div class="login-container">
+    <div class="login-container">
 
-    <!-- Login form container -->
-    <div class="login">
-      <h2>LOGIN</h2>
+      <!-- Login form container -->
+      <div class="login">
+          <h2>LOGIN</h2>
 
-      <!-- Login form -->
-      <form>
-        <label for="username">Username:&emsp;</label>
-        <input type="text" id="username" name="username" v-model="username" required><br><br>
-        <label for="password">Password: &emsp;</label>
-        <input type="password" id="password" name="password" v-model="password" required><br><br>
-        <button type="submit" id="login-button" @click.prevent="get_login" :disabled="disabled" class="btn">Login</button>
-      </form>
-      <p>{{ status }}</p>
+          <!-- Login form -->
+          <form>
+              <label for="username">Username:&emsp;</label>
+              <input type="text" id="username" name="username" v-model="username" required><br><br>
+              <label for="password">Password: &emsp;</label>
+              <input type="password" id="password" name="password" v-model="password" required><br><br>
+              <button type="submit" id="login-button" @click.prevent="get_login" :disabled="disabled" class="btn">Login</button>
+          </form>
+          <p>{{ status }}</p>
 
-      <!-- Route to forgot password page -->
-      <a href="/forgotpassword">Forgot Password?</a>
-      <br>
-      <button @click="driver_application" class="btn">Apply to be a Driver Here!</button>
+          <!-- Route to forgot password page -->
+          <a href="/forgotpassword">Forgot Password?</a>
+          <br>
+          <button @click="driver_application" class="btn">Apply to be a Driver Here!</button>
+      </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -51,7 +51,7 @@
     // Mounted function is used for doing operations right after the component
     // Is mounted and right before the component is shown to the user
     mounted() {
-      this.path = this.production_path;
+        this.path = this.production_path;
     },
 
     // Component specific methods
@@ -137,48 +137,48 @@
 </script>
 
 <style scoped>
-  .login-container {
-    width: 99.3vw;
-    height: 98.5vh;
-    display: grid;
-    place-items: center;
-    background-color: #8c72e0;
-    overflow-y: auto;
-  }
+    .login-container {
+        width: 99.3vw;
+        height: 98.5vh;
+        display: grid;
+        place-items: center;
+        background-color: #8c72e0;
+        overflow-y: auto;
+    }
 
-  .login {
-    display: grid;
-    place-items: center;
-    padding: 0 10px 10px;
-    border-style: solid;
-    border-color: black;
-    background-color: #ffffff;
-  }
+    .login {
+        display: grid;
+        place-items: center;
+        padding: 0 10px 10px;
+        border-style: solid;
+        border-color: black;
+        background-color: #ffffff;
+    }
 
-  p {
-    text-align: center;
-  }
+    p {
+        text-align: center;
+    }
 
-  #login-button {
-    width: 100%;
-  }
+    #login-button {
+        width: 100%;
+    }
 
-  button {
-    position: relative;
-    border: solid;
-    transition: 0.4s ease-in;
-    z-index: 1;
-  }
+    button {
+        position: relative;
+        border: solid;
+        transition: 0.4s ease-in;
+        z-index: 1;
+    }
 
-  button::before,
-  button::after {
-    position: absolute;
-    content: "";
-    z-index: -1;
-  }
+    button::before,
+    button::after {
+        position: absolute;
+        content: "";
+        z-index: -1;
+    }
 
-  .btn:hover {
-    box-shadow: inset -10.5em 0 0 0 #8c72e0,
-                inset 10.5em 0 0 0 #8c72e0;
-  }
+    .btn:hover {
+        box-shadow: inset -10.5em 0 0 0 #8c72e0,
+                    inset 10.5em 0 0 0 #8c72e0;
+    }
 </style>
