@@ -10,7 +10,7 @@
             <select name = "selected" @change="onChange($event)" required>
                 <option disabled value="">Please select one driver application to review:</option>
                 <option value="None">None</option>
-                <option v-for="driver in drivers" :key="driver">{{driver}}</option>
+                <option v-for="driver in drivers" :key="driver">{{ driver }}</option>
             </select>
 
             <!-- Dropdown menu for driver application decision -->
@@ -71,13 +71,13 @@
             // Method to get selected driver from driver dropdown menu
             onChange(e)
             {
-                this.driver_selected=e.target.value
+                this.driver_selected=e.target.value;
             },
 
             // Method to get selected decision from decision dropdown menu
             eventChange(e)
             {
-                this.decision=e.target.value
+                this.decision=e.target.value;
             },
 
             // Method to route user back to sponsor dashboard
@@ -85,7 +85,7 @@
                 this.$router.push({
                     name: 'sponsor-dashboard',
                     params: { username: this.username }
-                })
+                });
             },
 
             // Method to get pending driver applications from database
@@ -129,7 +129,7 @@
                     .catch((error) => {
                         // esling-disable-next-line
                         console.log(error);
-                    })
+                    });
             },
         },
 
@@ -164,7 +164,9 @@
 </script>
 
 <style scoped>
-    * {box-sizing: border-box;}
+    * {
+        box-sizing: border-box;
+    }
 
     .profile-container {
         display: flex;
@@ -179,42 +181,33 @@
     }
 
     .input-container {
-    display: flex;
-    width: 100%;
-    margin-bottom: 15px;
-    }
-
-    /* Style the form icons */
-    .icon {
-    padding: 10px;
-    background: #8c72e0;
-    color: white;
-    min-width: 50px;
-    text-align: center;
+        display: flex;
+        width: 100%;
+        margin-bottom: 15px;
     }
 
     /* Style the input fields */
     .input-field {
-    width: 100%;
-    padding: 10px;
-    outline: none;
+        width: 100%;
+        padding: 10px;
+        outline: none;
     }
 
     .input-field:focus {
-    border: 2px solid #8c72e0;
+        border: 2px solid #8c72e0;
     }
 
     .btn {
-    background-color: #8c72e0;
-    color: white;
-    padding: 15px 20px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    opacity: 0.9;
+        background-color: #8c72e0;
+        color: white;
+        padding: 15px 20px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        opacity: 0.9;
     }
 
     .btn:hover {
-    opacity: 1;
+        opacity: 1;
     }
 </style>

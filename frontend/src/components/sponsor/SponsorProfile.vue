@@ -122,9 +122,9 @@
         methods: {
             fetchAllData(){ //show records
                 axios.get(this.path + '/', {params: {request: 'username'}})
-                .then(function(response){
+                    .then(function(response){
                         this.allData = response.data.members;
-                });
+                    });
             },
 
             // Method to get drivers associated with the sponsor from the database

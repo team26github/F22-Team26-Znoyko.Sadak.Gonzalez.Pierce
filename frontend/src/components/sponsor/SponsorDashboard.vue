@@ -184,21 +184,4 @@
     button:hover::after {
         width: 100%;
     }
-
-    .user-id-container, .username-container, .password-container, .email-container, .user-type-container, .drivers-list-container {
-        display: flex;
-        width: 49%;
-        border-style: solid;
-        border-color: black;
-        justify-content: center;
-        align-items: center;
-    }
-    .password, .username, .email {
-        width: 100%;
-    }
-    .catalog-item-points, .catalog-items {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
 </style>

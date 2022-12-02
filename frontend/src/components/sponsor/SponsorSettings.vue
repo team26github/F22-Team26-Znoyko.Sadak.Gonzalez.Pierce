@@ -151,7 +151,6 @@
             <div class="driver-container" v-if="show_drivers">
                 <div class="driver-info" v-for="driver in display_drivers()" :key="driver">
                     <p><strong>Full Name:</strong> {{ driver.full_name }}<input type="text" placeholder="New Name" v-model="new_driver['FullName']" v-if="update_driver[driver.full_name]"/></p>
-                    <!-- <p><strong>Username:</strong> {{ driver.username }}<input type="text" placeholder="New Username" v-model="new_driver['Username']" v-if="update_driver[driver.full_name]"/></p> -->
                     <p><strong>Username:</strong> {{ driver.username }}</p>
                     <p><strong>Email:</strong> {{ driver.email }}<input type="text" placeholder="New Email" v-model="new_driver['Email']" v-if="update_driver[driver.full_name]"/></p>
                     <p><strong>Points Limit:</strong> {{ driver.points_limit }} points<input type="text" placeholder="New Points Limit" v-model="new_driver['PointsLimit']" v-if="update_driver[driver.full_name]"/></p>
@@ -256,17 +255,17 @@
                 axios.post(this.path + '/edit', null, {params: {request: 'max_points', max_points: new_max_points, userid: this.user_id}})
                     .then((res) => {
                         if (res.data.status === "success") {
-                                this.max_points = new_max_points;
-                                window.alert("Max point change successful");
-                            }
+                            this.max_points = new_max_points;
+                            window.alert("Max point change successful");
+                        }
                         else {
-                                window.alert("Maximum points change unsuccessful");
-                            }
-                        })
+                            window.alert("Maximum points change unsuccessful");
+                        }
+                    })
                     .catch((error) => {
                         // esling-disable-next-line
                         console.log(error);
-                    })
+                    });
             },
             
             // Method to route sponsor to add new sponsor page
@@ -295,15 +294,15 @@
                         if (res.data.status === "success") {
                             this.expiration_period = new_expiration_period;
                             window.alert("Expiration Period change successful");
-                            }
+                        }
                         else {
                             window.alert("Expiration Period change unsuccessful");
-                            }
-                            })
+                        }
+                    })
                     .catch((error) => {
                         // esling-disable-next-line
                         console.log(error);
-                    })
+                    });
             },
 
             // Method to edit catalog filters for this sponsor and their associated drivers
@@ -328,7 +327,7 @@
                         })
                         .catch((error) => {
                             console.log(error);
-                        })
+                        });
                 }
             },
 
@@ -380,7 +379,7 @@
 
             // Method to update driver information (Params: Old driver info, and New driver info)
             update_info(old_driver, new_driver) {
-                let data = {}
+                let data = {};
 
                 for (let key of Object.keys(new_driver)) {
                     if (new_driver[key] !== null) {
@@ -444,7 +443,7 @@
                                 }
                             }
                         }
-                    })
+                    });
             }
         },
 
@@ -536,17 +535,6 @@
         width: 100%;
     }
 
-    .user-id-container, .username-container, .password-container, .email-container, .user-type-container, .drivers-list-container {
-        display: flex;
-        width: 49%;
-        border-style: solid;
-        border-color: black;
-        justify-content: center;
-        align-items: center;
-    }
-    .password, .username, .email {
-        width: 100%;
-    }
     .catalog-item-points, .catalog-items {
         display: flex;
         flex-direction: row;
