@@ -251,7 +251,6 @@
                 <div class="driver-fees-info" v-for="driver in display_driver_fees()" :key="driver">
                     <p><strong>Full Name:</strong> {{ driver.full_name }}</p>
                     <p><strong>User ID:</strong> {{ driver.user_id }}</p>
-                    <p><strong>Date Range:</strong> {{ start_date }} to {{ end_date }}</p>
                     <p><strong>Fee Generated:</strong> {{ driver.fee_generated }} Points </p>
                 </div>
             </div>
@@ -306,8 +305,6 @@
                 show_admins: false,
                 show_driver_fees: false,
                 show_sponsor_fees: false,
-                start_date: "September 1st",
-                end_date: "Today",
                 selected_driver: 'All',
                 selected_sponsor: 'All',
                 selected_admin: 'All',
